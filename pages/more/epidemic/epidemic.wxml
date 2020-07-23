@@ -1,0 +1,45 @@
+
+<view>
+<view class="top">
+  同程乘客交通工具速查
+</view>
+  <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="section">
+        <view class="section__title">日期（必填）：</view>
+        <picker name= "date" mode="date" value="{{form.date}}" start="2019-12-15" end="2020-02-15" bindchange="bindDateChange">
+          <view class="picker">点我选择日期{{date}}</view>
+        </picker>
+      </view>
+
+      <view class="section">
+        <view class="section__title">车/航班/船次：</view>
+        <view class="weui-cells weui-cells_after-title">
+          <view class="weui-cell weui-cell_input">
+            <input name= "vehicle" class="weui-input" value="{{form.vehicle}}" maxlength="10" placeholder="例如：G3030/MU2555/晋6C972" />
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section__title">目的地(暂不支持)：</view>
+        <view class="weui-cells weui-cells_after-title">
+          <view class="weui-cell weui-cell_input">
+            <input disabled="true" name="destination" class="weui-input" maxlength="10" placeholder="例如：武昌/北京" />
+          </view>
+        </view>
+      </view>
+      
+      <view class="btn-area">
+        <button class="section" formType="submit" type="primary">点击查询</button>
+        <button class="section" formType="reset" type="default">点击重写</button>
+      </view>
+  </form>
+  <view class="section" wx:for="{{res_data}}">
+    <text>{{item}}</text>
+  </view>
+  <view class="section">
+    <text class="declare">特别声明：\n1、本程序查询数据来源人民日报等官方微博，人工搜集核对整理，如有错误或缺漏，请联系本人邮箱：shjchang@163.com；\n2、每次查询暂时只支持一个班次，一个目的地，车次信息请确保完整正确，无须填写“次”字，目的地无须填写具体车站名；\n3、查询结果仅供参考，如果查询到有相关确诊乘客信息，不要慌张，居家隔离14天，如有不适做好防护，立即前往当地指定定点医疗机构；\n4、如有需要相关数据进行研究，请直接联系本人，本数据仅用作学习、研究与用户查询用途。\n5、数据最后更新时间：2020年2月3日15:37</text>
+  </view>
+
+</view>
+<text></text>

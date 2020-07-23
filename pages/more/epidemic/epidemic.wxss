@@ -1,0 +1,18 @@
+.top{
+  text-align: center;
+}
+
+.section{
+  background-color: rgb(221, 221, 221);
+  margin: 10px;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.section_title{
+  font-weight: bold;
+}
+
+.declare{
+  font-size: 12px;
+}

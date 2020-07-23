@@ -1,0 +1,60 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/index/detail/detail",
+    "pages/release/release",
+    "pages/mine/mine",
+    "pages/more/more",
+    "pages/more/ar/ar",
+    "pages/more/lw/lw",
+    "pages/more/lw/index/index",
+    "components/date-time-picker/date-time-picker"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "寻TA",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#a9b7b7",
+    "selectedColor": "black",
+    "borderStyle": "white",
+    "list": [
+      {
+        "selectedIconPath": "images/home_selected.png",
+        "iconPath": "images/home.png",
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "iconPath": "images/release.png",
+        "selectedIconPath": "images/release_selected.png",
+        "pagePath": "pages/release/release",
+        "text": "发布"
+      },
+      {
+        "selectedIconPath": "images/menu_selected.png",
+        "iconPath": "images/menu.png",
+        "pagePath": "pages/more/more",
+        "text": "功能"
+      },
+      {
+        "selectedIconPath": "images/mine_selected.png",
+        "iconPath": "images/mine.png",
+        "pagePath": "pages/mine/mine",
+        "text": "我"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "networkTimeout": {
+    "request": 10000
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "style": "v2"
+}

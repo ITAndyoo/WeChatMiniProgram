@@ -1,0 +1,137 @@
+.element {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 5px solid rgb(235,235,235);
+  padding-bottom: 45rpx;
+  background: white;
+}
+
+.element view {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top:25rpx;
+  padding-bottom: 25rpx;
+  border-bottom: 1px solid rgb(235,235,235);
+}
+
+.element label {
+  font-size: 30rpx;
+}
+
+.element input{
+  width: 75%;
+  margin-left: 15rpx;
+  font-size: 30rpx;
+  padding-left: 15rpx;
+  height: 30rpx;
+}
+
+.element date-time-picker{
+  width: 75%;
+  margin-left: 15rpx;
+  font-size: 30rpx;
+  padding-left: 15rpx;
+  height: 30rpx;
+}
+
+textarea {
+  border: 1px solid gainsboro;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  width: 70%;
+  height: 200rpx;
+  padding: 20rpx;
+  background-color: white;
+  font-size: 30rpx;
+}
+
+.element .imageView {
+  width: 80%;
+  height: 250rpx;
+  background-color: rgb(235,235,235);
+  border-radius: 30rpx;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50rpx;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.element .imageDel{
+  width:80%;
+  margin: 0 auto;
+  margin-top: 20rpx;
+  background-color: rgb(235,235,235);
+  border-radius: 30rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5rpx;
+  padding-top: 5rpx;
+}
+
+.element .imageDel text {
+  font-size: 25rpx;
+  color: black;
+}
+
+
+.element .imageView text {
+  font-size: 25rpx;
+  color: black;
+}
+
+.element .imageView image {
+  width: 100%;
+  height: 250rpx;
+  border-radius: 30rpx;
+}
+
+.imageBig {
+  margin-bottom: 100rpx;
+}
+
+.btnView {
+  position: fixed;
+  bottom: 0px;
+  display: flex;
+  width: 100%;
+  font-size: 35rpx;
+  border-radius: 0px;
+}
+
+.send {
+  background-color:black;
+  color: white;
+  font-weight: 600;
+  margin: 0;
+}
+
+.picker {
+  width: 100%;
+  height: 300rpx;
+  position: absolute;
+  top: 30%;
+  bottom: 30%;
+  z-index: 7;
+  background-color: rgba(235,235,235);
+  text-align: center;
+  margin: 0 auto;
+}
+
+.radio-group{
+  padding-top:25rpx;
+  padding-bottom: 25rpx;
+}
+
+.radio-group radio{
+  padding-left: 30rpx;
+}
+
+.radio text{
+  color: black;
+}

@@ -1,0 +1,46 @@
+<view class="container">
+  <view class="section">
+    <view class="imgview">
+      <image class = "img" mode = "widthFix" wx:if="{{src}}" src="{{src}}" />
+    </view>
+  </view>
+  <view class="floattip" bindtap="selectitem">识别有误?</view>
+  <!-- <view class="tip" style="display:{{hidden1}}">识别结果</view>
+  <view class="item-list" style="display:{{hidden1}}" id = "{{item.keyword}}" wx:for="{{items}}" bindtap="tap">
+    {{item.keyword}}  
+  </view> -->
+  <view class="section">
+    <view class="tip" style="display:{{hidden2}}">TA说</view>
+    <view class="item-list" style="display:{{hidden2}}" id = "{{item.id}}" wx:for="{{comment}}">
+      <view class='list-item-userinfo'>
+          <image class="avatar" wx:if="{{item.avatar}}" width="43px;" src="{{item.avatar}}" />
+          <view class="list-item-username">
+            <text>{{item.user}}</text>
+          </view>
+          <view class="list-item-time">
+            <text>{{item.time}}</text>
+          </view>
+        </view>
+        <view class='list-item-usertext'>
+          <view class="list-item-text-content" wx:if="{{item.content != 'false' }}">
+            <text>{{item.content}}</text>
+          </view>
+        </view>
+    </view>
+    <view class="tip" style="display:{{hidden3}}">暂无留言，说点什么吧</view>
+  </view>
+  <!-- <view class="item-list" style="display:{{hidden3}}" bindtap="upload">点我说些话</view> -->
+  <view class="section">
+    <form bindsubmit="submit">
+      <view class="footer_bar">
+        <input class="input" name="content" placeholder="说点什么..." value="{{content}}" bindinput="checkinput"/>
+        <button class="auth_btn" type="primary" open-type="getUserInfo" bindgetuserinfo="GetUserInfo" style="display:{{auth_btn_dis}};">授权留言</button>
+        <button class="send_btn" form-type="submit" disabled="{{disabled}}" style="display:{{send_btn_dis}};">发送</button>
+      </view>
+    </form>
+  </view>
+  <view class="footer">识别结果由百度AI开放平台提供</view>
+</view>
+<modal hidden="{{hiddenModal}}" title="自定义识别结果" confirm-text="确定" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm">  
+    <input type='text' id ="user_defined_item" name="user_defined_item" placeholder="请输入所扫描的物品" value="{{user_defined_item}}" auto-focus bindinput="input"/>
+</modal>

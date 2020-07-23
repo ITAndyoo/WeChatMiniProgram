@@ -1,0 +1,6 @@
+这里是登录后我的信息
+<view>
+  <view class='user_image'>
+    <image></image>
+  </view>
+</view>

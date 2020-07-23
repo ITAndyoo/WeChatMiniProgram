@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "发布启事",
+  "usingComponents": {
+    "date-time-picker": "/components/date-time-picker/date-time-picker"
+  }
+}

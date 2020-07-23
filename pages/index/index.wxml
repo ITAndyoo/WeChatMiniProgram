@@ -1,0 +1,189 @@
+<wxs module="refresh">
+  module.exports = {
+    onPulling: function(evt, instance) {
+      var p = Math.min(evt.detail.dy / 30, 1)
+      //console.log(p)
+      var view = instance.selectComponent('.refresh-container')
+      if(p!=1)
+        instance.callMethod('reTextchange','0')
+      else
+        instance.callMethod('reTextchange','1')       
+      view.setStyle({
+        opacity: p,
+        transform: "scale(" + p + ")"
+      }) 
+    }
+  }
+</wxs>
+
+<view class='topTabSwiper'>
+    <view class='tab  {{currentData == 0 ? "tabBorer" : ""}}'  data-current = "0" bindtap='checkCurrent'>寻物</view>
+    <view class='tab  {{currentData == 1 ? "tabBorer" : ""}}'  data-current = "1" bindtap='checkCurrent'>招领</view>
+</view>
+
+<swiper current="{{currentData}}" class='swiper' style="height: {{clientHeight?clientHeight+'px':'auto'}}" duration="300" bindchange="bindchange">
+  <swiper-item>
+    <scroll-view class="scrollview" 
+      scroll-y="{{true}}" 
+      style="height: {{clientHeight?clientHeight+'px':'auto'}}" 
+      scroll-with-animation="{{true}}"        
+      bindscrolltolower="scrollbot" 
+      scroll-top="{{scrollTop}}" 
+      refresher-enabled="{{true}}" 
+      refresher-threshold="{{30}}"
+      refresher-default-style="none"
+      refresher-triggered="{{triggered_1}}"
+      bindrefresherpulling="{{refresh.onPulling}}"
+      bindrefresherrefresh="onRefresh"
+      bindrefresherrestore="onRestore"
+      bindrefresherabort="onAbort"
+    > 
+    <view slot="refresher" 
+      class="refresh-container"
+      style="display: block;width: 100%;height: 30px;display: flex;align-items: center">
+      <view class="view1" style="font-size:10px; position: absolute; text-align: center; width: 100%;">
+        {{refreshText}}
+      </view>
+    </view>
+
+    <view class='swiper_con'>
+      <view class="list-item" wx:for="{{listItems}}" wx:if="{{item.upset>=-5&&item.type==1}}" wx:key="id" id="item_{{item.id}}" bindtap="tap" bindlongpress="longpress">
+        <view class='list-item-userinfo'>
+          <view class="avatar" wx:if="{{item.usergender == 0}}" style="background-color:rgb(105,105,105)">{{item.username}}</view>
+          <view class="avatar" wx:if="{{item.usergender == 1}}" style="background-color:rgb(135,206,250)">{{item.username}}</view>
+          <view class="avatar" wx:if="{{item.usergender == 2}}" style="background-color:rgb(255,192,203)">{{item.username}}</view>
+          <view class="list-item-username">
+            <text>在找TA的 {{item.thing}}</text>
+          </view>
+          <view class="list-item-time">
+            <text>{{item.time}}</text>
+          </view>
+        </view>
+        <view class='list-item-usertext'>
+          <view class="list-item-text-content" wx:if="{{item.site != 'false' }}">
+            <text>丢失地点：{{item.site}}</text>
+          </view>
+          <view class="list-item-text-content" wx:if="{{item.disc != 'false' }}">
+            <text>描述信息：{{item.disc}}</text>
+          </view>
+          <view class="list-item-text-content" wx:if="{{item.url != 'false' }}">
+            <text>物品画像：\n</text>
+            <image src = "{{mlurl}}MyPhp/static/upload/{{item.url}}" data-src="{{mlurl}}MyPhp/static/upload/{{item.url}}" class="thavatar" catchtap="preview"/>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='swiper_footer'>
+      <text>{{refreshText2}}</text>
+    </view>
+    
+    </scroll-view>
+  </swiper-item>
+  <swiper-item>
+        <!-- 
+      可以加紧急广播！！！
+      中部是丢失物品 浏览窗口 包括图片 物品类别 丢失时间 发现地点 
+      点开可看到捡拾者联系方式 -->
+    <scroll-view class="scrollview" 
+      scroll-y="{{true}}" 
+      style="height: {{clientHeight?clientHeight+'px':'auto'}}" 
+      scroll-with-animation="{{true}}"        
+      bindscrolltolower="scrollbot" 
+      scroll-top="{{scrollTop}}" 
+      refresher-enabled="{{true}}" 
+      refresher-threshold="{{30}}"
+      refresher-default-style="none"
+      refresher-triggered="{{triggered_1}}"
+      bindrefresherpulling="{{refresh.onPulling}}"
+      bindrefresherrefresh="onRefresh"
+      bindrefresherrestore="onRestore"
+      bindrefresherabort="onAbort"
+    > 
+    <view slot="refresher" 
+      class="refresh-container"
+      style="display: block;width: 100%;height: 30px;display: flex;align-items: center">
+      <view class="view1" style="font-size:10px; position: absolute; text-align: center; width: 100%;">
+        {{refreshText}}
+      </view>
+    </view>
+
+    <view class='swiper_con'>
+      <view class="list-item" wx:for="{{listItems}}" wx:if="{{item.upset>=-5&&item.type==2}}" wx:key="id" id="item_{{item.id}}" bindtap="tap" bindlongpress="longpress">
+        <view class='list-item-userinfo'>
+          <view class="avatar" wx:if="{{item.usergender == 0}}" style="background-color:rgb(105,105,105)">{{item.username}}</view>
+          <view class="avatar" wx:if="{{item.usergender == 1}}" style="background-color:rgb(135,206,250)">{{item.username}}</view>
+          <view class="avatar" wx:if="{{item.usergender == 2}}" style="background-color:rgb(255,192,203)">{{item.username}}</view>
+          <view class="list-item-username">
+            <text>捡到了 {{item.thing}}</text>
+          </view>
+          <view class="list-item-time">
+            <text>{{item.time}}</text>
+          </view>
+        </view>
+        <view class='list-item-usertext'>
+          <view class="list-item-text-content" wx:if="{{item.site != 'false' }}">
+            <text>发现地点：{{item.site}}</text>
+          </view>
+          <view class="list-item-text-content" wx:if="{{item.disc != 'false' }}">
+            <text>描述信息：{{item.disc}}</text>
+          </view>
+          <view class="list-item-text-content" wx:if="{{item.url != 'false' }}">
+            <text>物品画像：\n</text>
+            <image src = "{{mlurl}}MyPhp/static/upload/{{item.url}}" data-src="{{mlurl}}MyPhp/static/upload/{{item.url}}" class="thavatar" catchtap="preview"/>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='swiper_footer'>
+      <text>{{refreshText2}}</text>
+    </view>
+    
+    </scroll-view>
+  </swiper-item>
+</swiper>
+
+<!--悬浮按钮-->
+<view class="round-click1" bindtap="search">
+  <image src="../../images/search.png"></image>
+</view>
+<view class="round-click2" bindtap="goTop">
+  <image src="../../images/gotop.png"></image>
+</view>
+
+<!--搜索框-->
+<modal hidden="{{search_hidden}}" title="搜索框" confirm-text="搜索" cancel-text="取消" bindcancel="search_cancel" bindconfirm="search_confirm" no-cancel="{{nocancel}}">
+  <view>
+    <form bindsubmit="send" report-submit="true">
+      <view class="element">
+        <view>
+          <label>时间</label>
+          <picker name= "start_date" mode="date" value="{{form.start_date}}" start="2019-12-15" end="{{end}}" bindchange="bindDateChange1">
+            <view class="picker">起始日期：{{form.start_date}}</view>
+          </picker>
+        </view>
+        <view>
+          <picker name= "end_date" mode="date" value="{{form.end_date}}" start="2019-12-15" end="{{end}}" bindchange="bindDateChange2">
+            <view class="picker">结束日期：{{form.end_date}}</view>
+          </picker>
+        </view>
+        <view>
+          <label>物品</label>
+          <input type="text" class="typeInput" value="{{typeValue}}" name="formType" placeholder="例如：雨伞" bindinput="inputType"/>
+        </view>
+        <view>
+          <label>地点</label>
+          <input type="text" class="siteInput" value="{{siteValue}}" name="formSite" placeholder="例如：后市" bindinput="inputSite"/>
+        </view>
+        <view>
+          <label>特征信息</label>
+          <input type="text" class="contentInput" value="{{contentValue}}" name="formContent" placeholder="例如：姓名等" bindinput="inputContent"/>
+        </view>
+          <radio-group class="radio-group" bindchange="radioChange">
+              <radio class="radio" wx:for-items="{{items}}" wx:key="name" value="{{item.name}}" checked="{{item.checked}}">
+                  <text>{{item.value}}</text>
+              </radio>
+          </radio-group>
+      </view>
+    </form>
+  </view>
+</modal>

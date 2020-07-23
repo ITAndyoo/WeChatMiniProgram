@@ -1,0 +1,9 @@
+<view class="container">
+  <camera device-position="back" flash="auto" binderror="error" style="position:fixed;top:0;width: 100%; height: 100vh;"></camera>
+    <cover-view hover-class="btnhover" class="btnview" bindtap="takePhoto">
+      <cover-image class="btn" src="./images/cam.png"></cover-image>
+    </cover-view>
+    <cover-view hover-class="btnhover" class="rbtnview" bindtap="reback">
+      <cover-image class="img" src="./images/return.png"></cover-image>
+    </cover-view> 
+</view>

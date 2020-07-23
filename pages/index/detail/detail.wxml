@@ -1,0 +1,51 @@
+<view class='title'>
+    <view class='tab'>寻找中</view>
+</view>
+<view class='body'>
+    <view class='section'>
+      <view class="card"  id="item_{{item.id}}"  >
+        <view class="avatar" wx:if="{{item.usergender == 0}}" style="background-color:rgb(105,105,105)">{{item.username}}</view>
+          <view class="avatar" wx:if="{{item.usergender == 1}}" style="background-color:rgb(135,206,250)">{{item.username}}</view>
+          <view class="avatar" wx:if="{{item.usergender == 2}}" style="background-color:rgb(255,192,203)">{{item.username}}</view>
+        <!-- <image src="../../../images/mine.png" class="avatar"/> -->
+        <view class="card-info">
+          <view class="card-username">
+            <text>在找TA的 {{item.thing}}</text>
+          </view>
+          <view class="card-time">
+            <text>{{item.time}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="section">
+        <view class='list-info'>
+          <view class="list-item-text-content" wx:if="{{item.site != 'false' }}">
+            <text>丢失地点：{{item.site}}</text>
+          </view>
+          <view class="list-item-text-content" wx:if="{{item.disc != 'false' }}">
+            <text>描述信息：{{item.disc}}</text>
+          </view>
+          <view class="list-item-text-content" wx:if="{{item.url != 'false' }}">
+            <text>物品画像：\n</text>
+            <image src = "{{url}}MyPhp/static/upload/{{item.url}}" data-src="{{url}}MyPhp/static/upload/{{item.url}}" class="thavatar" bindtap="preview"/>
+          </view>
+          <view class="list-item-text-content">
+            <text>联系方式：</text>
+            <view bindtap="{{connect}}" style="display:inline-block;color:rgb(100, 100, 100);"><text selectable="true">{{phone}}</text>
+            </view>  
+          </view>
+          <view class="list-item-text-content-val" hidden="{{hidden}}">
+            <movable-area class="content" style="width:{{area_width}}%">拖动滑块验证查看联系方式
+		          <movable-view class='box' style='width:{{box_width}}px' friction="{{100}}" direction="horizontal" x="{{x}}" damping="{{500}}" bindchange="drag" bindtouchend="dragOver">
+			          <view class='movable-icon'></view>
+		          </movable-view>
+	          </movable-area>
+          </view>
+        </view>
+      </view>
+    
+</view>
+<view class="footer">
+  <button class="mark" disabled="true">收藏</button>
+</view>
