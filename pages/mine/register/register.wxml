@@ -20,14 +20,10 @@
         <input bindinput="passwordInput" style="width:85%;display:inline-block;height:100%;" password="true"/>
       </view>
     </view>
-
-    <view class="extrainfo">
-        <view>同意用户协议</view>
-    </view>
   </view>
 
   <view class="login-item bottom" >
-    <button class="login-btn"  bindtap="loginBtnClick">注册</button>
+    <button class="login-btn"  disabled="true" bindtap="loginBtnClick">注册</button>
     <view class='info'>{{result}}</view>
   </view>
 </view>

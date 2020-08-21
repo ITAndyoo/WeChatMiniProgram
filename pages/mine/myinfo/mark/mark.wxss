@@ -1,0 +1,75 @@
+
+.list-item{
+  /*height: 370rpx;*/
+  border-bottom:8px solid;
+  border-bottom-color: rgb(235,235,235);
+  background-color: rgba(255, 255, 255,0.9);
+  /*box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.308);*/
+}
+
+.list-item-userinfo{
+  height: 120rpx;
+  width: 100%;
+  position: relative;
+}
+
+.avatar{
+height:90rpx; 
+width:90rpx;
+border-radius: 20%;
+position: absolute;
+top: 10rpx;
+bottom: 10rpx;
+left: 20rpx;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 25rpx;
+}
+
+.thavatar{
+height:100rpx; 
+width:100rpx;
+border-radius: 5%;
+margin-top:10rpx; 
+margin-bottom: 10rpx;
+margin-right: 20rpx;
+}
+
+.list-item-username{
+  font-size: 25rpx;
+  position: absolute;
+  top:10rpx;
+  left: 140rpx;
+}
+
+.list-item-time{
+  position: absolute;
+  top:60rpx;
+  left: 140rpx;
+  font-size: 20rpx;
+}
+
+.list-item-usertext{
+  /*height: 250rpx;*/
+  width: 100%;
+  position: relative;
+}
+
+.list-item-text-content{
+  display: block;
+  text-align: left;
+  padding-left: 25rpx;
+  margin-bottom: 10rpx; 
+  font-size: 25rpx;
+  color: black;
+}
+
+.tips{
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  color: rgb(135,135,135);
+  font-size: 13px;
+}

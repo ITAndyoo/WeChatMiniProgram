@@ -6,40 +6,54 @@
   <view class="login-item">
     <view class="login-item-id" style='width:90%;margin-left:5%;'>
       <view style='border:1px solid rgb(221, 221, 221);border-radius:8px;width:100%;height:38px;display:inline-block;'>
-        <view style='width:10%;display:inline-block;height:100%;padding-left:2%'>
+        <view style='width:8%;display:inline-block;height:100%;padding-left:2%'>
           <image src='../../images/id.png' style='display:inline;' mode="aspectFit"/>
         </view>
-        <input bindinput="uesrnameInput" style="width:85%;display:inline-block;height:100%;"/>
+        <input bindinput="uesrnameInput" style="padding-left:2%;width:85%;display:inline-block;height:100%;"/>
       </view>
     </view>
     
     <view class="login-item-pwd" style='width:90%;margin-left:5%;margin-top:2%'>
       <view style='border:1px solid rgb(221, 221, 221);border-radius:8px;width:100%;height:38px;display:inline-block;'>
-        <view style='width:10%;display:inline-block;height:100%;padding-left:2%'>
+        <view style='width:8%;display:inline-block;height:100%;padding-left:2%'>
           <image src="../../images/psw.png" style='display:inline;' mode="aspectFit"/>
         </view>
-        <input bindinput="passwordInput" style="width:85%;display:inline-block;height:100%;" password="true"/>
+        <input bindinput="passwordInput" style="padding-left:2%;width:85%;display:inline-block;height:100%;" password="true"/>
       </view>
     </view>
 
     <view class="extrainfo">
-      <text>忘记密码</text>
-      <navigator url="./register/register">
-        <view>点击注册</view>
-      </navigator>
+      <view class="tips1">
+      <checkbox-group bindchange = 'change'>
+        <checkbox value="agree">
+          已阅读并同意
+          <navigator style="font-weight:700" display="inline-block" url="./secret/secret">软件服务条款</navigator>
+        </checkbox>
+      </checkbox-group>
+      </view>
+      <view class="tips2">
+        <navigator url="./register/register">
+          <view>忘记密码</view>
+        </navigator>
+        <view>|</view>
+        <navigator url="./register/register">
+          <view>点击注册</view>
+        </navigator>
+      </view>  
     </view>
   </view>
 
   <view class="login-item bottom" >
     <button class="login-btn"  bindtap="loginBtnClick">登录</button>
-    <view class='info'>{{result}}</view>
   </view>
 
-  <view class="item bottom-info">
-    <view class="item_image">
+  <button class="item bottom-info" type="primary" wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="GetUserInfo">
+    <!-- <view class="item_image">
       <image src="../../images/wechat.png"  class="item_image_wechat"/>
-    </view>
-    <view class="item_image"><text>微信登陆</text></view>
-  </view>
+    </view> -->
+    <!-- <view class="item_image"><text>微信登陆</text></view> -->
+    微信登录
+  </button>
+  <view wx:else>请升级微信版本</view>
 
 </view>

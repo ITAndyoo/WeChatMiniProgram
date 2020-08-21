@@ -108,7 +108,6 @@ margin-top:10rpx;
   width: 40%;
   padding: 5rpx;
   font-weight: 600;
-  height: 80rpx;
 }
 
 .footer .connect {

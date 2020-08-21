@@ -44,7 +44,7 @@
 
 .list-item{
   /*height: 370rpx;*/
-  border-bottom:1px solid;
+  border-bottom:8px solid;
   border-bottom-color: rgb(235,235,235);
   background-color: rgba(255, 255, 255,0.9);
   /*box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.308);*/
@@ -88,9 +88,9 @@ margin-right: 20rpx;
 
 .list-item-time{
   position: absolute;
-  top:70rpx;
+  top:60rpx;
   left: 140rpx;
-  font-size: 25rpx;
+  font-size: 20rpx;
 }
 
 .list-item-usertext{

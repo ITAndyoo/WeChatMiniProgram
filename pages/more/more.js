@@ -1,19 +1,35 @@
+var app = getApp();
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
-    
+    background: [],
+    mlurl:app.globalData.static_url,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+    var that = this;
+    wx.request({
+      url: app.globalData.url + 'config/getSwiper',
+      success:function(res){
+        that.setData({
+          background:res.data,
+        })
+      },
+      fail:function(){
+
+      }
+    })
   },
 
+
+  swipertap:function(e){
+    console.log(e);
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -25,7 +41,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+
   },
 
   /**

@@ -1,0 +1,30 @@
+<!--pages/more/xiaoxun/xioaxun.wxml-->
+<view class="container">
+  <view class="header">
+    小寻
+  </view>
+  <view class="content">
+    <view class="chat-card" style="color:{{text_color}}">
+      {{chat}}
+    </view>
+    <view class="chat-card" style="color:{{text_color}}">
+      {{repo}}
+    </view>
+  </view>
+  <view class="footer">
+    <button class="auth_btn" type="primary" open-type="getUserInfo" bindgetuserinfo="GetUserInfo" style="display:{{auth_btn_dis}};">授权留言</button>
+    <view class="send_btn" hover-class="send_btn_hover" bindtouchstart="startrecord" bindtouchend="endrecord" disabled="{{disabled}}" style="display:{{send_btn_dis}};" catchlongpress="catchTapEvent">长按说话</view>
+  </view>
+</view>
+
+<view class="fadeIn" wx:if="{{iosDialog1}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog">
+        <view class="weui-dialog__hd"><strong class="weui-dialog__title">提示信息</strong></view>
+        <view class="weui-dialog__bd">您尚未登录，是否登陆</view>
+        <view class="weui-dialog__ft">
+            <a class="weui-dialog__btn weui-dialog__btn_default" bindtap="close">取消</a>
+            <a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="confirm">确定登录</a>
+        </view>
+    </view>
+</view>

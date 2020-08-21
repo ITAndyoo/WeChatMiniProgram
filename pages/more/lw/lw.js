@@ -12,8 +12,29 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-   
+    var that = this;
+    wx.getSetting({
+      success(res) {
+        if (!res.authSetting['scope.camera']) {
+          console.log("请求获取权限");
+          wx.authorize({
+            scope: "scope.camera",
+            success(res) {
+              console.log("获取权限成功");
+            },
+            fail: function () {
+              
+              that.reback();
+              wx.showToast({
+                title: '为了获取更好体验，请在右上角...开启摄像头权限',
+                icon: "none",
+                duration : 5000,
+              })
+            }
+          })
+        }
+      }
+    })
   },
 
   takePhoto : function(){
@@ -25,7 +46,7 @@ Page({
           })
           //console.log(res.tempImagePath);
 
-          wx.navigateTo({
+          wx.redirectTo({
             url: './index/index?src='+ this.data.src,
           })
         }

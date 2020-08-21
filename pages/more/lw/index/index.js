@@ -21,6 +21,10 @@ Page({
     auth_btn_dis:'block',
     hiddenModal:'true',
     user_defined_item:'',
+    iosDialog1:false,
+    userid:'',
+    long:'',
+    lat:'',
   },
 
   /**
@@ -106,7 +110,7 @@ Page({
   },
 
   //识别结果选择
-  selectitem:function(){
+  selectitem1:function(){
     var that = this;
     var item_list = [];
     for(var item in that.data.items){
@@ -144,7 +148,7 @@ Page({
   },
 
 //自定义modal输入框确定
-  confirm:function(e){
+  confirm_item:function(e){
     if(this.data.user_defined_item!=''){
       this.cancel();
       this.setData({
@@ -160,9 +164,15 @@ Page({
     }
   },
 
+   selectitem2:function(){
+      wx.navigateTo({
+        url: '../trace/trace?long='+this.data.long+'&lat='+this.data.lat,
+      })
+   },
+
   getloc: function () {
+    var that = this;
     return new Promise(function (resolve, reject) {
-      var that = this;
       //获取地理位置信息
       wx.getSetting({
         success(res) {
@@ -177,9 +187,12 @@ Page({
                   isHighAccuracy: true,
                   success(res) {
                     var info = [];
-                    
-                    console.log(res.longitude);
-                    console.log(res.latitude);
+                    that.setData({
+                      long:res.longitude,
+                      lat:res.latitude,
+                    })
+                    //console.log(res.longitude);
+                    //console.log(res.latitude);
                 
                     info[0] = res.longitude;
                     info[1] = res.latitude;
@@ -188,7 +201,7 @@ Page({
                 })
               },
               fail: function () {
-                reject('获取权限失败！');
+                reject('获取地理位置权限失败！');
               }
             })
           } else {
@@ -197,7 +210,10 @@ Page({
               isHighAccuracy: true,
               success(res) {
                 var info = [];
-                
+                that.setData({
+                  long:res.longitude,
+                  lat:res.latitude,
+                })
                 //console.log(res.longitude);
                 //console.log(res.latitude);
             
@@ -358,25 +374,40 @@ Page({
       try{
         var ui = wx.getStorageSync('userinfo')
         //console.log(ui);
-        if(ui){
+        var userid = wx.getStorageSync('userid');
+        if(userid==undefined||userid==null||userid==''||
+        ui==undefined||ui==null||ui==''){
+          that.setData({
+            iosDialog1: true,
+          })
+        }else{
+          //console.log(123);
+          //正常操作
           that.setData({
             userInfo : ui.nickName,
+            gender : ui.gender,
           })
           resolve();
-        }else{
-          wx.getUserInfo({
-            success:function(res){
-              wx.setStorageSync('userinfo', res.userInfo);
-              that.setData({
-                userInfo : res.userInfo.nickName,
-              })
-              resolve();  
-            },
-            fail:function(){
-              reject();
-            },
-          });    
         }
+        // if(ui){
+        //   that.setData({
+        //     userInfo : ui.nickName,
+        //   })
+        //   resolve();
+        // }else{
+        //   wx.getUserInfo({
+        //     success:function(res){
+        //       wx.setStorageSync('userinfo', res.userInfo);
+        //       that.setData({
+        //         userInfo : res.userInfo.nickName,
+        //       })
+        //       resolve();  
+        //     },
+        //     fail:function(){
+        //       reject();
+        //     },
+        //   });    
+        // }
       }catch(e){
         reject();
       }
@@ -433,7 +464,8 @@ Page({
         url: app.globalData.url + 'lw/upload', 
         method:'POST',
         data:{
-          user_id: that.data.userInfo,
+          user_name: that.data.userInfo,
+          user_id: that.data.userid,
           item:that.data.item,
           longitude:res[0],
           latitude:res[1],
@@ -540,6 +572,7 @@ Page({
    */
   onShow: function () {
     var that = this;
+    var userid = wx.getStorageSync('userid')
     wx.getSetting({
       success (res){
         if (res.authSetting['scope.userInfo']) {
@@ -551,6 +584,10 @@ Page({
               that.setData({
                 send_btn_dis:"block",
                 auth_btn_dis:"none",
+                userid : userid,
+              })
+              that.setData({
+                iosDialog1: false,
               })
             }
           })
@@ -596,5 +633,16 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+  close:function(){
+    this.setData({
+      iosDialog1: false,
+    })
+  },
+
+  confirm:function(){
+    wx.navigateTo({
+      url: '../../../mine/mine?from=release',
+    })
+  },
 })

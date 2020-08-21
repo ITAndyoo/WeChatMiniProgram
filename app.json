@@ -8,7 +8,15 @@
     "pages/more/ar/ar",
     "pages/more/lw/lw",
     "pages/more/lw/index/index",
-    "components/date-time-picker/date-time-picker"
+    "components/date-time-picker/date-time-picker",
+    "pages/more/xiaoxun/xiaoxun",
+    "pages/mine/secret/secret",
+    "pages/mine/myinfo/myinfo",
+    "pages/mine/secret/xunta",
+    "pages/mine/myinfo/mark/mark",
+    "pages/mine/myinfo/record/record",
+    "pages/mine/myinfo/msg/msg",
+    "pages/more/lw/trace/trace"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -42,7 +50,7 @@
       {
         "selectedIconPath": "images/mine_selected.png",
         "iconPath": "images/mine.png",
-        "pagePath": "pages/mine/mine",
+        "pagePath": "pages/mine/myinfo/myinfo",
         "text": "我"
       }
     ]
@@ -56,5 +64,11 @@
       "desc": "你的位置信息将用于小程序位置接口的效果展示"
     }
   },
-  "style": "v2"
+  "style": "v2",
+  "plugins": {
+    "WechatSI": {
+      "version": "0.3.4",
+      "provider": "wx069ba97219f66d99"
+    }
+  }
 }

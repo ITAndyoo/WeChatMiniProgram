@@ -1,6 +1,13 @@
 <view class="mycontainer">
   <view class="topbar">
-    <text class="text">更多功能</text>
+    <swiper indicator-dots="true" class="swiper"
+      autoplay="true" interval="3000" duration="500" > 
+      <block wx:for="{{background}}" wx:key="*this">
+        <swiper-item>
+          <view class="swiper-item"><image class= 'swiper_img' id = "{{item}}" src="{{mlurl}}static/{{item}}"  mode="widthFix" bindtap="swipertap"></image></view>
+        </swiper-item>
+      </block>
+    </swiper>
   </view>
   <view class="row">
     <view class="col">
@@ -12,7 +19,7 @@
     <view class="col">
       <navigator hover-class="noshadow" url="./ar/ar">
       <view class="frame"><image class="item" src="./images/ar.png" ></image></view>
-      <text class="dis">AR测试</text>
+      <text class="dis">AR</text>
       </navigator>
     </view>
     <view class="col">
@@ -22,9 +29,9 @@
       </navigator>
     </view>
     <view class="col">
-      <navigator hover-class="noshadow" url="./epidemic/epidemic">
-      <view class="frame"><image class="item" src="./images/ar.png" ></image></view>
-      <text class="dis">测试接口3</text>
+      <navigator hover-class="noshadow" url="./xiaoxun/xiaoxun">
+      <view class="frame"><image class="item" src="./images/xiaoxun.png" ></image></view>
+      <text class="dis">小寻</text>
       </navigator>
     </view>
   </view>

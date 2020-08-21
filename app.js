@@ -36,8 +36,9 @@ App({
   globalData: {
     userInfo: null,
     //url: 'http://192.168.43.106:8081/MyPhp/',
-    url: 'https://www.changle.xyz/MyPhp/index.php/',
-    static_url : 'https://www.changle.xyz/',
+    url: 'https://api.changle.xyz/index.php/',
+    static_url : 'https://api.changle.xyz/',
+    server_url : 'https://www.changle.xyz/',
   },
 
   wxRequest(method,url,data,callback,errFun,token){
@@ -59,5 +60,15 @@ App({
         errFun(err);
       }
     })
+  },
+  checkRes:function(res){
+    if(res=='session_invalid'){
+      return '1370'
+    }else if(res =='session_expr'){
+      return '1080'
+    }else{
+      return '1000'
+    }
   }
+
 })

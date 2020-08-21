@@ -8,7 +8,7 @@
       </view> -->
       <view>
         <label><text style="color:red;">*</text>联系方式</label>
-        <input type="text" name="phoneNumber" placeholder="例如：qq1234567(不超过15个字符)"value="{{phoneNumber}}" bindfocus="jujiao"/>
+        <input disabled="true" type="text" name="phoneNumber" placeholder="不用填啦！(不超过15个字符)"value="{{phoneNumber}}" bindfocus="jujiao"/>
       </view>
     </view>
     <view class="element">
@@ -63,4 +63,17 @@
       </picker-view-column>
     </picker-view>
   </form>
+</view>
+
+
+<view class="fadeIn" wx:if="{{iosDialog1}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog">
+        <view class="weui-dialog__hd"><strong class="weui-dialog__title">提示信息</strong></view>
+        <view class="weui-dialog__bd">您尚未登录，是否登陆</view>
+        <view class="weui-dialog__ft">
+            <a class="weui-dialog__btn weui-dialog__btn_default" bindtap="close">取消</a>
+            <a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="confirm">确定登录</a>
+        </view>
+    </view>
 </view>

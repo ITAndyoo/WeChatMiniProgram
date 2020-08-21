@@ -1,5 +1,5 @@
 import WxValidate from '../../../utils/WxValidate.js'
-
+var app = getApp()
 Page({
 
   /**
@@ -69,7 +69,7 @@ Page({
 
   },
   bindDateChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
+    //console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       date: e.detail.value
     })
@@ -104,6 +104,9 @@ Page({
 
   formSubmit: function (e) {
     var myThis = this;
+    this.setData({
+      chosen:e.detail.value
+    })
     const params = e.detail.value
     //校验表单
     if (!this.WxValidate.checkForm(params)) {
@@ -111,9 +114,12 @@ Page({
       this.showModal(error)
       return false
     }
-    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+    //console.log('form发生了submit事件，携带数据为：', e.detail.value)
+    wx.showLoading({
+      title: '查询中',
+    })
     wx.request({
-      url: 'http://60.205.214.66/Epidemic/epidemic_search.php',
+      url: app.globalData.server_url + 'Epidemic/epidemic_search.php',
       data: {
         date: e.detail.value.date,
         vehicle: e.detail.value.vehicle,
@@ -126,17 +132,23 @@ Page({
       dataType: 'json',
       responseType: 'text',
       success: function(res) {
-        console.log(res.data)
+        //console.log(res.data)
         myThis.setData({
           res_data: res.data
         })
       },
       fail: function(res) {},
-      complete: function(res) {},
+      complete: function(res) {wx.hideLoading({
+        complete: (res) => {},
+      })},
     })
   },
-  formReset: function () {
-    console.log('form发生了reset事件')
+  formReset: function (e) {
+    this.setData({
+      chosen:'',
+      date:''
+    })
+    //console.log('form发生了reset事件')
   },
 
 })

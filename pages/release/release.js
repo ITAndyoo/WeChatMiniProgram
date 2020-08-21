@@ -1,4 +1,4 @@
-
+const app = getApp(); 
 Page({
 
   /**
@@ -22,6 +22,8 @@ Page({
     ],
     send_btn_dis:'none',
     auth_btn_dis:'block',
+    userid:'',
+    iosDialog1: false,
   },
 
   handleChange(e) {
@@ -93,6 +95,7 @@ Page({
   onShow: function () {
     this.currenDate();
     var that = this;
+    var userid = wx.getStorageSync('userid')
     wx.getSetting({
       success (res){
         if (res.authSetting['scope.userInfo']) {
@@ -104,6 +107,10 @@ Page({
               that.setData({
                 send_btn_dis:"block",
                 auth_btn_dis:"none",
+                userid : userid,
+              })
+              that.setData({
+                iosDialog1: false,
               })
             }
           })
@@ -232,12 +239,18 @@ Page({
             that.setData({ imagesUrl: images });
             that.submit(options);
           }else if (options1.statusCode==501){
+              wx.hideLoading({
+                complete: (res) => {},
+              })
               wx.showToast({
                 title: '图片大小不能超过2M',
                 icon: 'none',
                 duration: 2000,
               })
           } else {
+            wx.hideLoading({
+              complete: (res) => {},
+            })
             wx.showToast({
               title: '图片上传错误，发布失败',
               icon: 'none',
@@ -255,13 +268,11 @@ Page({
     var contactName = util.reg("\\n[\s| ]*\\r", options.detail.value.contactName);
 
     var formType = util.reg("\\n[\s| ]*\\r", options.detail.value.formType);
-    var formTime = util.reg("\\n[\s| ]*\\r", options.detail.value.formTime);
+    var formTime = util.reg("\\n[\s| ]*\\r", that.data.inttime); 
     var formSite = util.reg("\\n[\s| ]*\\r", options.detail.value.formSite);
     var formContent = util.reg("\\n[\s| ]*\\r", options.detail.value.formContent);
-
-    formTime = formTime
-    
-    if (phoneNumber == true || formTime == true || formType == true) {
+    //-----------------------------去除联系方式验证phoneNumber == true 
+    if (formTime == true || formType == true) {
        wx.showModal({
          title: '必填项不能为空',
          content: '',
@@ -274,8 +285,11 @@ Page({
         success: function (res) {
           if (res.confirm) {
             //that.submit(options, userInfo);
+            wx.showLoading({
+              title: '发布中',
+            }) 
             if(that.data.imageHidden==false)
-              that.uploadImage(options1);
+              that.uploadImage(options);
             else
               that.submit(options);
           }
@@ -306,40 +320,58 @@ Page({
     return str;
 },
 getinfo:function(){
-  console.log('info调用');
+  //console.log('info调用');
   var that = this;
   return new Promise(function (resolve, reject) {
     try{
       var ui = wx.getStorageSync('userinfo')
-      //console.log(ui);
-      if(ui){
+      var userid = wx.getStorageSync('userid');
+      if(userid==undefined||userid==null||userid==''||
+      ui==undefined||ui==null||ui==''){
+        that.setData({
+          iosDialog1: true,
+        })
+      }else{
+        //console.log(123);
+        //正常操作
         that.setData({
           userInfo : ui.nickName,
           gender : ui.gender,
         })
         resolve();
-      }else{
-        wx.getUserInfo({
-          success:function(res){
-            wx.setStorageSync('userinfo', res.userInfo);
-            that.setData({
-              userInfo : res.userInfo.nickName,
-              gender : res.userInfo.gender,
-            })
-            resolve();  
-          },
-          fail:function(){
-            reject();
-          },
-        });    
       }
+          
+      //console.log(ui);
+      // if(ui){
+      //   that.setData({
+      //     userInfo : ui.nickName,
+      //     gender : ui.gender,
+      //   })
+      //   resolve();
+      // }else{
+      //   wx.getUserInfo({
+      //     success:function(res){
+      //       wx.setStorageSync('userinfo', res.userInfo);
+      //       that.setData({
+      //         userInfo : res.userInfo.nickName,
+      //         gender : res.userInfo.gender,
+      //       })
+      //       resolve();  
+      //     },
+      //     fail:function(){
+      //       reject();
+      //     },
+      //   });    
+      // }
     }catch(e){
       reject();
     }
   });
 },
   //发布信息上传
-  submit: function (options, userInfo) { 
+     
+  submit: function (options, userInfo) {
+    
     var that = this;
     this.getinfo().then(()=>{
       wx.request({
@@ -349,7 +381,9 @@ getinfo:function(){
           //"orderPrivate.phoneNumber": options.detail.value.phoneNumber,
           //"orderPrivate.contactName": options.detail.value.contactName,
           //"orderPrivate.imageUrl": that.data.imagesUrl.toString(),
-          phoneNumber : options.detail.value.phoneNumber,
+          //---------------------------------------------去除联系方式提交
+          //phoneNumber : options.detail.value.phoneNumber,
+          phoneNumber:'12345678910',
           //contactName : options.detail.value.contactName,
           contactName: that.data.userInfo,
           gender:that.data.gender,
@@ -360,6 +394,7 @@ getinfo:function(){
           formSite: options.detail.value.formSite,
           formContent: that.utf16toEntities(options.detail.value.formContent),
           formUrl: that.data.imagesUrl.toString(),
+          userid:that.data.userid,
         },
         header: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -367,30 +402,45 @@ getinfo:function(){
         method: 'POST',
         success: function (res) {
           //console.log(res);
-          if (res.data == "success") {
-            wx.showToast({
-              title: '发布成功',
-              success: function () {
-                setTimeout(function () {
-                  // wx.switchTab({
-                  //   url: "/pages/index/index",
-                  // })
-                  wx.reLaunch({
-                    url: '/pages/index/index',
-                  })
-                }, 400);
-              }
-            })
+          if(app.checkRes(res.data)=='1000'){
+            if (res.data == "success") {
+              wx.hideLoading({
+                complete: (res) => {},
+              })
+              wx.showToast({
+                title: '发布成功',
+                success: function () {
+                  setTimeout(function () {
+                    // wx.switchTab({
+                    //   url: "/pages/index/index",
+                    // })
+                    wx.reLaunch({
+                      url: '/pages/index/index',
+                    })
+                  }, 400);
+                }
+              })
+            }else{
+              wx.hideLoading({
+                complete: (res) => {},
+              })
+              wx.showToast({
+                title: '服务器错误，发布失败',
+                icon:'none',
+                duration:2000,
+              })
+            }
           }else{
-            wx.showToast({
-              title: '服务器错误，发布失败',
-              icon:'none',
-              duration:2000,
+            that.setData({
+              iosDialog1:true,
             })
           }
         }
       })
     }).catch(()=>{
+      wx.hideLoading({
+        complete: (res) => {},
+      })
       wx.showToast({
         title: '发布失败，请在右上方...中设置开启权限',
         icon:'none',
@@ -416,6 +466,20 @@ getinfo:function(){
       });
     }
   },
+
+  
+  close:function(){
+    this.setData({
+      iosDialog1: false,
+    })
+  },
+
+  confirm:function(){
+    wx.navigateTo({
+      url: '../mine/mine?from=release',
+    })
+  },
 })
+
 
 

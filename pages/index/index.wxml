@@ -68,7 +68,7 @@
           </view>
           <view class="list-item-text-content" wx:if="{{item.url != 'false' }}">
             <text>物品画像：\n</text>
-            <image src = "{{mlurl}}MyPhp/static/upload/{{item.url}}" data-src="{{mlurl}}MyPhp/static/upload/{{item.url}}" class="thavatar" catchtap="preview"/>
+            <image src = "{{mlurl}}static/upload/{{item.url}}" data-src="{{mlurl}}static/upload/{{item.url}}" class="thavatar" catchtap="preview"/>
           </view>
         </view>
       </view>
@@ -129,7 +129,7 @@
           </view>
           <view class="list-item-text-content" wx:if="{{item.url != 'false' }}">
             <text>物品画像：\n</text>
-            <image src = "{{mlurl}}MyPhp/static/upload/{{item.url}}" data-src="{{mlurl}}MyPhp/static/upload/{{item.url}}" class="thavatar" catchtap="preview"/>
+            <image wx:if="{{item.url}} != 'false'||{{item.url}} != 'undefined'" src = "{{mlurl}}static/upload/{{item.url}}" data-src="{{mlurl}}static/upload/{{item.url}}" class="thavatar" catchtap="preview"/>
           </view>
         </view>
       </view>

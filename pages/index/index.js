@@ -53,6 +53,9 @@ Page({
     let url = app.globalData.url + 'item/index/'+page; 
     let data = {};
     var Mythis = this;
+    wx.showLoading({
+      title: '加载中',
+    })
     app.wxRequest('GET',url,data,(res)=>{
       //console.log(res.data)
       var img = Mythis.int2date(res.data);
@@ -60,6 +63,9 @@ Page({
       Mythis.setData({
         listItems: res.data,
         imgList: img
+      })
+      wx.hideLoading({
+        complete: (res) => {},
       })
       //优化，如果数据不满一页，调整加载提示信息
       if(res.data.length == 0){
@@ -79,6 +85,9 @@ Page({
       //Mythis.autoHeight();
       wx.stopPullDownRefresh(); 
     },err=>{
+      wx.hideLoading({
+        complete: (res) => {},
+      })
       wx.showLoading({
         title: '请检查网络设置',
         duration: 3000
@@ -113,7 +122,8 @@ Page({
       var min = a[i].time.substr(8,2); 
       var date = new Date();
       a[i].time = (date.getYear() != year) ? '20' + year + '年' + month + '月' + day + '日 ' + hour + ':' + min : month + '月' + day + '日 ' + hour + ':' + min;
-      img[i] = app.globalData.url + 'static/upload/' + a[i].url;
+      if(a[i].url!='false')
+        img.push(app.globalData.static_url + 'static/upload/' + a[i].url);
       a[i].username = a[i].username.substr(-2);
       a[i].disc=decode(a[i].disc);
     }
@@ -221,13 +231,12 @@ Page({
       //console.log(res.data)
       //var data_list = that.data.listItems;
       if(res.data.length!=0){
-        const oldData = Mythis.data.listItems;
-        const oldImg = Mythis.data.imgList;
+        var oldData = Mythis.data.listItems;
+        var oldImg = Mythis.data.imgList;
         var img = Mythis.int2date(res.data);
 
         
         Mythis.setData({
-          mlurl: app.globalData.url,
           listItems: oldData.concat(res.data),
           imgList: oldImg.concat(img),
         })
@@ -282,7 +291,7 @@ Page({
   },
 //图片预览
   preview : function(event){
-    //console.log(event);
+    //console.log(this.data.imgList);
     //console.log(event.currentTarget.dataset.src)
     let currentUrl = event.currentTarget.dataset.src
     wx.previewImage({
@@ -314,8 +323,14 @@ Page({
           let url = app.globalData.url + 'item/tipoff/' + id;
           let data = {};
           var Mythis = this;
+          wx.showLoading({
+            title: '举报中',
+          })
           app.wxRequest('GET', url, data, (res) => {
             if(res.data=='success'){
+              wx.hideLoading({
+                complete: (res) => {},
+              })
               wx.showToast({
                 title: '感谢您的反馈！',
                 icon: 'success',
@@ -329,6 +344,9 @@ Page({
               })
             }
           }, err => {
+            wx.hideLoading({
+              complete: (res) => {},
+            })
             wx.showLoading({
               title: '请检查网络设置',
             })
@@ -436,6 +454,9 @@ Page({
     //console.log(Mythis.data.form.sdateValue)
     //console.log( Mythis.data.form.edateValue)
     //console.log(Mythis.data.form.flagValue)
+    wx.showLoading({
+      title: '查询中',
+    })
     wx.request({
       url: app.globalData.url+'item/search',
       method:'post',
@@ -452,6 +473,9 @@ Page({
       },
       success: function (res) {
         //console.log(res.data)
+        wx.hideLoading({
+          complete: (res) => {},
+        })
         if(res.data=='fail'){
           wx.showToast({
             title: '没有符合条件的结果',
@@ -475,6 +499,9 @@ Page({
         }
       },
       fail: function (res) {
+        wx.hideLoading({
+          complete: (res) => {},
+        })
         wx.showLoading({
           title: '请检查网络设置',
         })

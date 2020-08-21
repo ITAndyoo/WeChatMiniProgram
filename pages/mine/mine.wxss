@@ -29,4 +29,16 @@
 .login-item-id .login-item-pwd{
   border: 1px;
   border-color: black;
+
+}
+.tips1{
+  display: flex;
+}
+
+.tips2 {
+  display: flex;
+}
+
+.login-item{
+  margin-bottom: 30px;
 }

@@ -3,7 +3,7 @@ page{
   position: relative;
 }
 
-.floattip{
+.floattip1{
   text-align: center;
   width: 145rpx;
   line-height: 45rpx;
@@ -15,6 +15,20 @@ page{
   border-top-left-radius: 25rpx;
   border-bottom-left-radius: 25rpx;
 }
+
+.floattip2{
+  text-align: center;
+  width: 145rpx;
+  line-height: 45rpx;
+  font-size: 25rpx;
+  position: absolute;
+  right: 0;
+  top: 20%;
+  background-color: rgba(235,235,235,0.5);
+  border-top-left-radius: 25rpx;
+  border-bottom-left-radius: 25rpx;
+}
+
 
 .section{
   width: 100%;
@@ -85,7 +99,7 @@ margin-right: 20rpx;
   position: absolute;
   top:65rpx;
   left: 140rpx;
-  font-size: 25rpx;
+  font-size: 20rpx;
 }
 
 .list-item-usertext{

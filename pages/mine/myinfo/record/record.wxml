@@ -1,0 +1,51 @@
+<view class="list-item" wx:for="{{listItems}}" wx:if="{{item.upset>=-5&&item.type==1}}" wx:key="id" id="item_{{item.id}}" bindtap="tap" bindlongpress="longpress">
+  <view class='list-item-userinfo'>
+    <view class="avatar" wx:if="{{item.usergender == 0}}" style="background-color:rgb(105,105,105)">{{item.username}}</view>
+    <view class="avatar" wx:if="{{item.usergender == 1}}" style="background-color:rgb(135,206,250)">{{item.username}}</view>
+    <view class="avatar" wx:if="{{item.usergender == 2}}" style="background-color:rgb(255,192,203)">{{item.username}}</view>
+    <view class="list-item-username">
+      <text>在找TA的 {{item.thing}}</text>
+    </view>
+    <view class="list-item-time">
+      <text>{{item.time}}</text>
+    </view>
+  </view>
+  <view class='list-item-usertext'>
+    <view class="list-item-text-content" wx:if="{{item.site != 'false' }}">
+      <text>丢失地点：{{item.site}}</text>
+    </view>
+    <view class="list-item-text-content" wx:if="{{item.disc != 'false' }}">
+      <text>描述信息：{{item.disc}}</text>
+    </view>
+    <view class="list-item-text-content" wx:if="{{item.url != 'false' }}">
+      <text>物品画像：\n</text>
+      <image wx:if="{{item.url}} != 'false'||{{item.url}} != 'undefined'" src = "{{mlurl}}static/upload/{{item.url}}" data-src="{{mlurl}}static/upload/{{item.url}}" class="thavatar" catchtap="preview"/>
+    </view>
+  </view>
+</view>
+<view class="list-item" wx:for="{{listItems}}" wx:if="{{item.upset>=-5&&item.type==2}}" wx:key="id" id="item_{{item.id}}" bindtap="tap" bindlongpress="longpress">
+  <view class='list-item-userinfo'>
+    <view class="avatar" wx:if="{{item.usergender == 0}}" style="background-color:rgb(105,105,105)">{{item.username}}</view>
+    <view class="avatar" wx:if="{{item.usergender == 1}}" style="background-color:rgb(135,206,250)">{{item.username}}</view>
+    <view class="avatar" wx:if="{{item.usergender == 2}}" style="background-color:rgb(255,192,203)">{{item.username}}</view>
+    <view class="list-item-username">
+      <text>捡到了 {{item.thing}}</text>
+    </view>
+    <view class="list-item-time">
+      <text>{{item.time}}</text>
+    </view>
+  </view>
+  <view class='list-item-usertext'>
+    <view class="list-item-text-content" wx:if="{{item.site != 'false' }}">
+      <text>发现地点：{{item.site}}</text>
+    </view>
+    <view class="list-item-text-content" wx:if="{{item.disc != 'false' }}">
+      <text>描述信息：{{item.disc}}</text>
+    </view>
+    <view class="list-item-text-content" wx:if="{{item.url != 'false' }}">
+      <text>物品画像：\n</text>
+      <image wx:if="{{item.url}} != 'false'||{{item.url}} != 'undefined'" src = "{{mlurl}}static/upload/{{item.url}}" data-src="{{mlurl}}static/upload/{{item.url}}" class="thavatar" catchtap="preview"/>
+    </view>
+  </view>
+</view>
+<view class="tips">{{tips}}</view>

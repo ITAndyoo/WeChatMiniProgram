@@ -3,21 +3,29 @@ page{height: 100vh;}
 .mycontainer{
   height: 100%;
   background:white;
+  
 }
+
+.swiper{
+  width:380px;
+  height:213.75px;
+}
+.swiper_img{
+  width: 380px;
+  border-radius: 15px;
+  
+}
+
 .topbar{
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: white;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.308);
-  font-size: 20px;
+  border-radius: 15px;
+  box-shadow: 4px 4px 8px 1px rgba(0, 0, 0, 0.308);
+  width: 380px;
+  margin:5px auto;
 }
 
 .row{
-  padding-top: 10%;
+  padding-top: 5%;
   display:flex;
   align-items: center;
   justify-content: space-between;
@@ -54,10 +62,10 @@ page{height: 100vh;}
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 120rpx;
-  height: 120rpx;
+  width: 100rpx;
+  height: 100rpx;
   text-align: center;
   border-radius: 50%;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%);
   margin-bottom: 15rpx;
 }
