@@ -132,9 +132,9 @@ Page({
       dataType: 'json',
       responseType: 'text',
       success: function(res) {
-        //console.log(res.data)
+        console.log(res.data)
         myThis.setData({
-          res_data: res.data
+          res_data: res.data.item
         })
       },
       fail: function(res) {},

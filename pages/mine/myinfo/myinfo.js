@@ -7,15 +7,41 @@ Page({
    */
   data: {
     iosDialog1: false,
+    iosDialog2: false,
     userid:'',
     tips_hid:true,
     bd_hid:'none',
+    is_admin:false,
+    logo:'',
+    flag:false,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this;
+    if(wx.getSystemInfoSync().theme=='dark'){
+      this.setData({
+        theme:'dark',
+      })
+    }
+    wx.request({
+      url: app.globalData.url + 'config/getLogo',
+      success:function(res){
+        //console.log(res);
+        that.setData({
+          mlurl:app.globalData.static_url,
+          logo:res.data,
+          flag:true,
+        })
+      },
+      fail:function(){
+        that.setData({
+          flag:false,
+        })
+      }
+    })
     // //console.log(123);
     // var that = this;
     // wx.getSetting({
@@ -56,6 +82,18 @@ Page({
     })
   },
 
+  close2:function(){
+    this.setData({
+      iosDialog2:false,
+    })
+  },
+
+  confirm2:function(){
+    wx.navigateTo({
+      url: '../mine',
+    })
+  },
+
    mark: function(){
      wx.navigateTo({
        url: './mark/mark?userid='+ this.data.userid,
@@ -63,10 +101,15 @@ Page({
      })
    },
 
+  release: function(){
+    wx.navigateTo({
+      url: '../../release/release?userid='+ this.data.userid
+    })
+  },
+
   record: function(){
     wx.navigateTo({
       url: './record/record?userid='+ this.data.userid,
-
     })
   },
 
@@ -82,7 +125,8 @@ Page({
     wx.showLoading({
       title: '退出中...',
     })
-    if(that.data.userid=='')
+    const userid = wx.getStorageSync('userid');
+    if(that.data.userid==''|| userid=='')
       wx.showToast({
         title: '你还没有登录呢~',
         icon:'none',
@@ -91,6 +135,7 @@ Page({
     else{
       wx.removeStorageSync('userid');
       wx.removeStorageSync('userinfo');
+      wx.removeStorageSync('is_admin');
       wx.request({
       url: app.globalData.url + 'login/logout/'+that.data.userid,
       complete:function(){
@@ -98,13 +143,19 @@ Page({
           complete: (res) => {},
         })
       }
-    })
-    wx.showToast({
-      title: '成功退出',
-      icon:'none',
-      duration:2000,
-    })
-    that.onShow();
+      })
+      wx.showToast({
+        title: '成功退出',
+        icon:'none',
+        duration:2000,
+      })
+      that.setData({
+        nickName:'',
+        userid:'',
+        avatarUrl:'/images/avatar.png',
+        is_admin:false,
+      })
+      that.onShow();
   }
   },
 
@@ -120,9 +171,17 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function (options) {
+    if (typeof this.getTabBar === 'function' &&
+        this.getTabBar()) {
+        this.getTabBar().setData({
+          selected: 2,
+          offset: "85%"
+        })
+      }
     var isnotexp = true
     var that = this;
     var userid = wx.getStorageSync('userid')
+    var user_admin = wx.getStorageSync('is_admin')
     //后面做一次新消息查询
     wx.request({
       url: app.globalData.url+'login/checkRead/'+userid+'/1',
@@ -157,10 +216,19 @@ Page({
                 nickName:res.userInfo.nickName,
                 avatarUrl:res.userInfo.avatarUrl,
                 userid : userid,
+                is_admin : user_admin == 1 ? true : false,
               })
-              that.setData({
-                iosDialog1: false,
-              })
+              if(user_admin==-1){
+                that.setData({
+                  iosDialog1: false,
+                  iosDialog2: true,
+                })
+                that.quit();
+              }else{
+                that.setData({
+                  iosDialog1: false,
+                })
+              }
               wx.setStorageSync('userinfo', res.userInfo);
             }
           })
@@ -168,6 +236,7 @@ Page({
           wx.removeStorage({
             key: 'userinfo',
             key: 'userid',
+            key: 'is_admin'
           })
           //console.log('remove')
           that.setData({
@@ -180,15 +249,26 @@ Page({
   },
   //用户设置，暂不开发
   settings:function(){
-    this.setData({
-      tips_hid:false,
-    })
-    setTimeout(()=>
-    {
-      this.setData({
-        tips_hid:true,
+    if(this.data.userid==null||this.data.userid==''||this.data.userid==undefined){
+      wx.navigateTo({
+        url: '/pages/mine/mine',
       })
-    },2000)
+    }else{
+      this.setData({
+        topTips: true
+      });
+      setTimeout(()=>{
+        this.setData({
+          hide: true
+        });
+        setTimeout(() => {
+          this.setData({
+              topTips: false,
+              hide: false,
+          });
+        }, 300);
+      },1500)
+    }
   },
 
   /**

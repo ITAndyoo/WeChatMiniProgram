@@ -1,6 +1,6 @@
 // pages/mine/myinfo/mark/mark.js
 var app = getApp();
-import decode from '../../../../utils/emoji';
+import {int2date} from '../../../../utils/format'
 Page({
 
   /**
@@ -9,6 +9,7 @@ Page({
   data: {
     userid:'',
     mlurl:app.globalData.static_url,
+    hasmark:false,
   },
 
   /**
@@ -17,6 +18,11 @@ Page({
   onLoad: function (options) {
     var that = this;
     //接收userid
+    if(wx.getSystemInfoSync().theme=='dark'){
+      this.setData({
+        theme:'dark',
+      })
+    }
     if(options.userid==undefined||options.userid==null||options.userid==''){
       wx.showToast({
         title: '信息失效，请重新登录',
@@ -50,15 +56,28 @@ look:function(userid){
     //console.log(res);
     if(app.checkRes(res.data)=='1000'){
       if(res.data!='fail'){
-        var img = that.int2date(res.data);
+        var temp = int2date(res.data);
+        var img = temp[0];
+        var count = temp[1];
         //console.log(img);
-        that.setData({
-          listItems : res.data,
-          imgList: img,
-          tips:'已加载全部内容(已不存在的消息不会再展示)'
-        })
+        if(count>0){
+          that.setData({
+            listItems : res.data,
+            imgList: img,
+            hasmark: true,
+            tips:'已加载全部内容(已不存在的消息不会再展示)'
+          })
+        }else{
+          that.setData({
+            listItems:[],
+            hasmark: false,
+            tips:'你还没有收藏过信息哦~',
+          })  
+        }
       }else{
         that.setData({
+          listItems:[],
+          hasmark: false,
           tips:'你还没有收藏过信息哦~',
         })
       }
@@ -92,27 +111,7 @@ preview : function(event){
   })
 },
 
-//日期显示转换，int到用户time
-int2date : function(a){
-  var img = new Array();
-  for(var i =0;i<a.length;i++){
-    var year = a[i].time.substr(0,2);
-    var month = a[i].time.substr(2,2);
-    var day = a[i].time.substr(4,2);
-    var hour = a[i].time.substr(6,2);
-    var min = a[i].time.substr(8,2); 
-    var date = new Date();
-    a[i].time = (date.getYear() != year) ? '20' + year + '年' + month + '月' + day + '日 ' + hour + ':' + min : month + '月' + day + '日 ' + hour + ':' + min;
-    if(a[i].url!='false')
-      img[i] = app.globalData.static_url + 'static/upload/' + a[i].url;
-    a[i].username = a[i].username.substr(-2);
-    a[i].disc=decode(a[i].disc);
-  }
-  return img;
-},
-
-
-tap:function(event){//回退怎么办？？已自动解决
+tap:function(event){
   var id = event.currentTarget.id.substr(5)
     wx.navigateTo({
       url: '../../../index/detail/detail?id=' + id,
@@ -127,7 +126,7 @@ longpress:function(event){
   var that=this;
   wx.showModal({
     title: '提示',
-    content: '确认删除该记录？',
+    content: '确认取消该收藏？',
     success (res) {
     if (res.confirm) {
       wx.request({

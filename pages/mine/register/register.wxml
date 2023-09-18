@@ -4,7 +4,7 @@
   </view>
   <view class="login-item">
     <view class="login-item-id" style='width:80%;margin-left:5%;'>
-      <view style='border-top-left-radius:8px;border-top-right-radius:8px;width:100%;height:38px;display:inline-block;background:#fff;'>
+      <view style='border-top-left-radius:8px;border-top-right-radius:8px;width:100%;height:38px;display:inline-block;'>
         <view style='width:10%;display:inline-block;height:100%;padding-right:5%'>
           <image src='../../../images/id.png' style='display:inline;' mode="aspectFit"/>
         </view>
@@ -13,7 +13,7 @@
     </view>
     
     <view class="login-item-pwd" style='width:80%;margin-left:5%;padding-top:2%'>
-      <view style='border-top-left-radius:8px;border-top-right-radius:8px;width:100%;height:38px;display:inline-block;background:#fff;'>
+      <view style='border-top-left-radius:8px;border-top-right-radius:8px;width:100%;height:38px;display:inline-block;'>
         <view style='width:10%;display:inline-block;height:100%;padding-right:5%'>
           <image src="../../../images/psw.png" style='display:inline;' mode="aspectFit"/>
         </view>
@@ -23,7 +23,7 @@
   </view>
 
   <view class="login-item bottom" >
-    <button class="login-btn"  disabled="true" bindtap="loginBtnClick">注册</button>
+    <button class="login-btn"  disabled="true" bindtap="loginBtnClick">请使用微信登录</button>
     <view class='info'>{{result}}</view>
   </view>
 </view>

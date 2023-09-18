@@ -1,5 +1,4 @@
 const app = getApp()
-
 Page({
   data: {		//此处定义本页面中的全局变量
     result: '',
@@ -28,6 +27,9 @@ Page({
       })
   },
 
+  onShow:function(){
+  },
+
   GetUserInfo:function(e){
     var that = this;
     if(that.data.agree){
@@ -36,18 +38,20 @@ Page({
         wx.login({
           success:function(res){
             wx.request({
-              url: app.globalData.url+'login/login',
+              url: app.globalData.url+'user/login',
               data:{
                 code:res.code
               },
               success:function(res){
-                  //console.log(res);
+                  console.log(res);
                   if(res.data!='fail'){
                     
                     that.setData({
-                      userid : res.data
+                      userid : res.data.data.sessionId,
+                      is_admin: res.data.data.isAdmin
                     })
-                    wx.setStorageSync('userid',res.data)
+                    wx.setStorageSync('userid',res.data.data.sessionId)
+                    wx.setStorageSync('is_admin',res.data.data.isAdmin)
                     if(that.data.wherefrom=='release')
                     wx.navigateBack({
                       delta:1,

@@ -1,7 +1,7 @@
 <view class="mycontainer">
   <view class="topbar">
     <swiper indicator-dots="true" class="swiper"
-      autoplay="true" interval="3000" duration="500" > 
+      autoplay="true" interval="3000" duration="500"> 
       <block wx:for="{{background}}" wx:key="*this">
         <swiper-item>
           <view class="swiper-item"><image class= 'swiper_img' id = "{{item}}" src="{{mlurl}}static/{{item}}"  mode="widthFix" bindtap="swipertap"></image></view>
@@ -28,12 +28,12 @@
       <text class="dis">物话</text>
       </navigator>
     </view>
-    <view class="col">
+    <!-- <view class="col">
       <navigator hover-class="noshadow" url="./xiaoxun/xiaoxun">
       <view class="frame"><image class="item" src="./images/xiaoxun.png" ></image></view>
       <text class="dis">小寻</text>
       </navigator>
-    </view>
+    </view> -->
   </view>
   <view class="row">
      

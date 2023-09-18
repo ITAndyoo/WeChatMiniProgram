@@ -1,2 +1,19 @@
 /**app.wxss**/
 @import './pages/weui.wxss';
+
+::-webkit-scrollbar {
+  display:none;
+  width:0;
+  height:0;
+  color:transparent;
+}
+
+page{
+  --themeColor: rgba(0, 160, 233);  /*#00A0E9*/
+  --themeGrayColor: rgb(235,235,235);
+  --themeGreenColor: #07c160;
+  --themeDarkBgColor : #191919;
+  --themeDarkBgColor20: rgba(10,10,10,0.2);
+  --themeDarkTxtColor : #F6F6F6;
+  --themeDarkTipColor : #ABABAB;
+}

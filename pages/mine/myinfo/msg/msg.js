@@ -1,4 +1,5 @@
 // pages/mine/myinfo/msg/msg.js
+import {int2date3} from '../../../../utils/format'
 var app = getApp();
 Page({
 
@@ -8,6 +9,7 @@ Page({
   data: {
     userid:'',
     mlurl:app.globalData.static_url,
+    hasmsg: false,
   },
 
   /**
@@ -15,6 +17,11 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
+    if(wx.getSystemInfoSync().theme=='dark'){
+      this.setData({
+        theme:'dark',
+      })
+    }
     //接收userid
     if(options.userid==undefined||options.userid==null||options.userid==''){
       wx.showToast({
@@ -49,13 +56,16 @@ Page({
       //console.log(app.checkRes(res.data));
       if(app.checkRes(res.data)==1000){
         if(res.data!='fail'){
-          that.int2date(res.data);
+          int2date3(res.data);
           that.setData({
             listItems : res.data,
+            hasmsg: true,
             tips:'已加载全部内容'
           })
         }else{
           that.setData({
+            listItems : [],
+            hasmsg: false,
             tips:'暂无消息',
           })
         }
@@ -78,19 +88,9 @@ Page({
       }) },
     })
   },
-  int2date : function(a){
-    for(var i =0;i<a.length;i++){
-      var year = a[i].time.substr(0,2);
-      var month = a[i].time.substr(2,2);
-      var day = a[i].time.substr(4,2);
-      var hour = a[i].time.substr(6,2);
-      var min = a[i].time.substr(8,2); 
-      var date = new Date();
-      a[i].time = (date.getYear() != year) ? '20' + year + '年' + month + '月' + day + '日 ' + hour + ':' + min : month + '月' + day + '日 ' + hour + ':' + min;
-    }
-  },
 
-  tap:function(event){//回退怎么办？？已自动解决
+
+  tap:function(event){
     //console.log(event);
     var id = event.currentTarget.id.substr(5)
       wx.navigateTo({
@@ -105,7 +105,7 @@ Page({
     var that=this;
     wx.showModal({
       title: '提示',
-      content: '确认删除该记录？',
+      content: '确认删除该留言？',
       success (res) {
       if (res.confirm) {
         wx.request({
@@ -115,12 +115,18 @@ Page({
             //console.log(res)
             if(app.checkRes(res.data)=='1000'){
               if(res.data=='success'){
-              wx.showToast({
-                title: '已删除',
-                icon:'success',
-                duration:2000,
-              })
-              that.getmsg(that.data.userid);
+                wx.showToast({
+                  title: '已删除',
+                  icon:'success',
+                  duration:2000,
+                })
+                that.getmsg(that.data.userid);
+              }else{
+                wx.showToast({
+                  title: '删除失败，请稍后再试',
+                  icon:'none',
+                  duration:2000,
+                })
               }
             }else{
               wx.showToast({

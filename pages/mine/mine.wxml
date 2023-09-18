@@ -5,7 +5,7 @@
 
   <view class="login-item">
     <view class="login-item-id" style='width:90%;margin-left:5%;'>
-      <view style='border:1px solid rgb(221, 221, 221);border-radius:8px;width:100%;height:38px;display:inline-block;'>
+      <view style='border:1px solid rgb(111, 111, 111);border-radius:8px;width:100%;height:38px;display:inline-block;'>
         <view style='width:8%;display:inline-block;height:100%;padding-left:2%'>
           <image src='../../images/id.png' style='display:inline;' mode="aspectFit"/>
         </view>
@@ -14,7 +14,7 @@
     </view>
     
     <view class="login-item-pwd" style='width:90%;margin-left:5%;margin-top:2%'>
-      <view style='border:1px solid rgb(221, 221, 221);border-radius:8px;width:100%;height:38px;display:inline-block;'>
+      <view style='border:1px solid rgb(111, 111, 111);border-radius:8px;width:100%;height:38px;display:inline-block;'>
         <view style='width:8%;display:inline-block;height:100%;padding-left:2%'>
           <image src="../../images/psw.png" style='display:inline;' mode="aspectFit"/>
         </view>

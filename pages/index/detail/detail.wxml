@@ -1,65 +1,41 @@
-<view class='title'>
-    <view class='tab' wx:if="{{item.type == 1}}">寻找中</view>
-    <view class='tab' wx:if="{{item.type == 2}}">认领中</view>
+<view class='title' style="background:{{background_color}}">
+    <view class='tab' wx:if="{{item.type == 1}}">文字的力量，带我们前行</view>
+    <view class='tab' wx:if="{{item.type == 2}}">寥寥几字，记录人间旅途</view>
+    <view class='tab' wx:if="{{item.type == 3}}">别哭，那样就不好看了</view>
+    <view class='tab' wx:if="{{item.type == 4}}">每天睁开眼就是想你</view>
+    <view class='tab' wx:if="{{item.type == 5}}">就三行，我，喜欢，你</view>
+    <view class='tab' wx:if="{{item.type == 6}}">你为啥子可以发语音？</view>
+    <view class='tab' wx:if="{{item.type == 7}}">冲鸭！！！</view>
+    <view class='tab' wx:if="{{item.type == 8}}">鹅鹅鹅鹅鹅鹅鹅鹅~</view>
+    <view class='tab' wx:if="{{item.type == 9}}">鲁迅：我没说过</view>
+    <view class='tab' wx:if="{{item.type == 10}}">触动自己的那一句话</view>
 </view>
 <view class='body'>
     <view class='section'>
-      <view class="card"  id="item_{{item.id}}"  >
-        <view class="avatar" wx:if="{{item.usergender == 0}}" style="background-color:rgb(105,105,105)">{{item.username}}</view>
-          <view class="avatar" wx:if="{{item.usergender == 1}}" style="background-color:rgb(135,206,250)">{{item.username}}</view>
-          <view class="avatar" wx:if="{{item.usergender == 2}}" style="background-color:rgb(255,192,203)">{{item.username}}</view>
-        <!-- <image src="../../../images/mine.png" class="avatar"/> -->
-        <view class="card-info">
-          <view class="card-username" wx:if="{{item.type == 1}}">
-            <text>在找TA的 {{item.thing}}</text>
-          </view>
-          <view class="card-username" wx:if="{{item.type == 2}}">
-            <text>捡到了 {{item.thing}}</text>
-          </view>
-          <view class="card-time">
-            <text>{{item.time}}</text>
-          </view>
+      <view class="card" id="item_{{item.id}}">
+        <view class="list-item-text-content" wx:if="{{item.disc != 'false' }}">
+            <text selectable='true'>{{item.disc}}</text>
+            <view class="weui-media-box__info">
+              <view class="weui-media-box__info__meta">{{item.username}}</view>
+            </view>
+            <view class="weui-media-box__info">
+              <view class="weui-media-box__info__meta">{{item.time}}</view>
+              <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.thing}}</view>
+              <view class="weui-media-box__info__meta weui-media-box__info__meta_extra"><text style="color:#ff91a1;">{{item.upset}}人喜欢</text></view>
+            </view>
+            <view class="weui-media-box__info">
+              <view class="weui-media-box__info__meta option" ><image bindtap="call" class="threebtn" src="{{connect_icon}}"></image></view>
+              <view class="weui-media-box__info__meta weui-media-box__info__meta_extra option" ><image bindtap="copy" class="threebtn" src="{{copy_icon}}"></image></view>
+              <view class="weui-media-box__info__meta weui-media-box__info__meta_extra option"><image src="{{dis?collect_icon:uncollect_icon}}" class="threebtn" animation="{{animation_collect}}" bindtap="mark"></image></view>
+              <view class="weui-media-box__info__meta weui-media-box__info__meta_extra option"><image class="threebtn" src="{{like?like_icon:unlike_icon}}" animation="{{animation_like}}" bindtap="like"></image></view>
+            </view>
         </view>
       </view>
     </view>
-    <view class="section">
-        <view class='list-info'>
-          <view class="list-item-text-content" wx:if="{{item.site != 'false' }}">
-            <text>丢失地点：{{item.site}}</text>
-          </view>
-          <view class="list-item-text-content" wx:if="{{item.disc != 'false' }}">
-            <text>描述信息：{{item.disc}}</text>
-          </view>
-          <view class="list-item-text-content" wx:if="{{item.url != 'false' }}">
-            <text>物品画像：\n</text>
-            <image wx:if="{{item.url}} != 'false'||{{item.url}} != 'undefined'||{{item.url}} != ''" src = "{{url}}static/upload/{{item.url}}" data-src="{{url}}static/upload/{{item.url}}" class="thavatar" bindtap="preview"/>
-          </view>
-          <view class="list-item-text-content">
-            <text>联系方式：</text>
-            <view bindtap="{{connect}}" style="display:inline-block;color:rgb(100, 100, 100);"><text selectable="true">{{phone}}</text>
-            </view>  
-          </view>
-          <view class="list-item-text-content-val" hidden="true">
-            <movable-area class="content" style="width:{{area_width}}%">拖动滑块验证查看联系方式
-		          <movable-view class='box' style='width:{{box_width}}px' friction="{{100}}" direction="horizontal" x="{{x}}" damping="{{500}}" bindchange="drag" bindtouchend="dragOver">
-			          <view class='movable-icon'></view>
-		          </movable-view>
-	          </movable-area>
-          </view>
-          <view class="list-item-text-content" style="font-size:13px;color:rgb(135,135,135)">
-            【注】为保护隐私，目前不支持直接查看联系方式，请点击右下角“联系TA”进行留言。
-          </view>
-        </view>
-      </view>
-    
-</view>
-<view class="footer">
-  <button class="mark" disabled="{{dis}}" bindtap="mark">{{dis_text}}标记</button>
-  <button class="mark" bindtap="call">联系TA</button>
 </view>
 
 <modal hidden="{{hiddenModal}}" title="给对方留言" confirm-text="确定" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm_send">  
-    <input type='text' id ="user_defined_item" name="user_defined_item" placeholder="已存放地点或您的联系方式" value="{{user_msg}}" auto-focus bindinput="input_msg"/>
+    <input type='text' id ="user_defined_item" name="user_defined_item" placeholder="向发布者留言" value="{{user_msg}}" auto-focus bindinput="input_msg"/>
 </modal>
 
 <view class="fadeIn" wx:if="{{iosDialog1}}">

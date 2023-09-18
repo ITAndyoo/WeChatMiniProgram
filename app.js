@@ -5,7 +5,6 @@ App({
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-
     // 登录
     wx.login({
       success: res => {
@@ -35,8 +34,8 @@ App({
   },
   globalData: {
     userInfo: null,
-    //url: 'http://192.168.43.106:8081/MyPhp/',
-    url: 'https://api.changle.xyz/index.php/',
+    url: 'http://127.0.0.1:8080/',
+    //url: 'https://api.changle.xyz/index.php/',
     static_url : 'https://api.changle.xyz/',
     server_url : 'https://www.changle.xyz/',
   },

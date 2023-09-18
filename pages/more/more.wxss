@@ -2,8 +2,7 @@ page{height: 100vh;}
 
 .mycontainer{
   height: 100%;
-  background:white;
-  
+  background:white;  
 }
 
 .swiper{
@@ -46,7 +45,7 @@ page{height: 100vh;}
 
 .dis{
   width: 50px;
-  font-size: 30rpx;
+  font-size: 15px;
 }
 
 .item{
@@ -62,10 +61,25 @@ page{height: 100vh;}
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 80px;
+  max-height: 80px;
   width: 100rpx;
   height: 100rpx;
   text-align: center;
   border-radius: 50%;
   background: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%);
   margin-bottom: 15rpx;
+}
+
+@media (prefers-color-scheme:dark){
+  .mycontainer{
+    background: var(--themeDarkBgColor);
+  }
+  .topbar{
+    background-color: var(--themeDarkBgColor);
+  }
+  .dis{
+    color: var(--themeDarkTxtColor);
+  }
+
 }

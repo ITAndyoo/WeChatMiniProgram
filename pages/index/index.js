@@ -1,5 +1,4 @@
-var util = require('../../utils/util.js');
-import decode from '../../utils/emoji';
+import {int2date} from '../../utils/format'
 const app = getApp();
 var page = 1;
 var temppage = 0;
@@ -15,12 +14,14 @@ Page({
     triggered_1: false,
     refreshText:'下拉刷新',
     refreshText2:'',
+    issearch:false,
     clientHeight:0,
     imgList: [],  
     search_hidden:true,
+    scroll_index:'tab0',
     form: {
-      start_date: '',
-      end_date: '',
+      start_date: '点击设置起始日期',
+      end_date: '点击设置结束日期',
       sdateValue : '',
       edateValue : '',
       typeValue:'',
@@ -28,9 +29,12 @@ Page({
       contentValue:'',
     },
     items: [
-      { name: 'Lost', value: '寻物' , checked: true},
-      { name: 'Found', value: '招领', checked: false},
+      { name: 'Lost', value: '短文' , checked: true},
+      { name: 'Found', value: '长文', checked: false},
     ],
+    tabList:['全部','找短文','找长文','失恋博物馆','热恋博物馆','三行情书','你为什么可以发语音','正能量小屋','红红火火恍恍惚惚','经典语录','怎样的一句话'],
+    tabType:[0,1,2,3,4,5,6,7,8,9,10],
+    pos:0,
   },
 
   /**
@@ -40,41 +44,45 @@ Page({
 
 
   onLoad: function (options) {
-
+    wx.showLoading({
+      title: '加载中',
+    })
     var that = this
     wx.getSystemInfo({
       success: function (res) {
         that.setData({
+          theme: res.theme,
           clientHeight: res.windowHeight
         });
       }
     })
     page = 1;
-    let url = app.globalData.url + 'item/index/'+page; 
+    var type = that.data.currentData;
+    let url = app.globalData.url + 'item/index/'+page+'/'+type; 
     let data = {};
     var Mythis = this;
-    wx.showLoading({
-      title: '加载中',
-    })
     app.wxRequest('GET',url,data,(res)=>{
       //console.log(res.data)
-      var img = Mythis.int2date(res.data);
+      var temp = int2date(res.data);
+      var img = temp[0];
+      var count = temp[1];
       //console.log(img);
       Mythis.setData({
         listItems: res.data,
-        imgList: img
+        imgList: img,
       })
+      wx.setStorageSync('listitems'+type, that.data.listItems);
       wx.hideLoading({
         complete: (res) => {},
       })
       //优化，如果数据不满一页，调整加载提示信息
-      if(res.data.length == 0){
+      if(count == 0){
         Mythis.setData({
           refreshText2:'暂无可查询信息',
         })
-      }else if(res.data.length <=10){
+      }else if(count <=10 || this.data.issearch){
         Mythis.setData({
-          refreshText2:'已加载全部内容',
+          refreshText2:'---我是有底线的---',
         })
       }else{
         Mythis.setData({
@@ -90,47 +98,17 @@ Page({
       })
       wx.showLoading({
         title: '请检查网络设置',
-        duration: 3000
+        duration: 5000
       })
-    });
-      
+    });    
   },
   
-  // autoHeight:function(){
-  //   var that = this;
-  //   wx.createSelectorQuery()
-  //     .select('#end' + that.data.currentData).boundingClientRect()
-  //     .select('#start' + that.data.currentData).boundingClientRect().exec(rect => {
-  //       let hei = rect[0].top - rect[1].top;
-  //       console.log(hei);
-  //       that.setData({
-  //         hofSwiper: hei
-  //       });
-        
-  //     });
-  //   console.log(that.data.hofSwiper);
-  // },
-
-//日期显示转换，int到用户time
-  int2date : function(a){
-    var img = new Array();
-    for(var i =0;i<a.length;i++){
-      var year = a[i].time.substr(0,2);
-      var month = a[i].time.substr(2,2);
-      var day = a[i].time.substr(4,2);
-      var hour = a[i].time.substr(6,2);
-      var min = a[i].time.substr(8,2); 
-      var date = new Date();
-      a[i].time = (date.getYear() != year) ? '20' + year + '年' + month + '月' + day + '日 ' + hour + ':' + min : month + '月' + day + '日 ' + hour + ':' + min;
-      if(a[i].url!='false')
-        img.push(app.globalData.static_url + 'static/upload/' + a[i].url);
-      a[i].username = a[i].username.substr(-2);
-      a[i].disc=decode(a[i].disc);
-    }
-    return img;
-  },
   //下拉刷新
   onRefresh() {
+    //console.log('shuaxinla');
+    this.setData({
+      issearch:false,
+    })
     this.reTextchange(2);//开始刷新
     if (this._freshing) return
     this._freshing = true
@@ -159,7 +137,7 @@ Page({
       })
     else if(flag==2)
       this.setData({
-        refreshText:'玩命加载中...',
+        refreshText:'加载中...',
       })
     else if (flag == 3)
       this.setData({
@@ -180,6 +158,13 @@ Page({
     //可能存在二次调用，例如从发布页面switchTab到该页面，onLoad和onShow是否会都触发 应该不会
     //console.log(e);
     //this.onLoad();
+    if (typeof this.getTabBar === 'function' &&
+        this.getTabBar()) {
+        this.getTabBar().setData({
+          offset: "18%",
+          selected: 0
+        })
+      }
     wx.hideLoading({
       complete: (res) => {},
     })
@@ -217,50 +202,55 @@ Page({
    */
   //onReachBottom
   scrollbot: function () {
-    this.setData({
-      refreshText2:'玩命加载中...',
-    })
-    if(temppage==0)
-      page = page + 1;
-    else
-      page = temppage;
-    let url = app.globalData.url + 'item/index/' + page;
-    let data = {};
-    var Mythis = this;
-    app.wxRequest('GET', url, data, (res) => {
-      //console.log(res.data)
-      //var data_list = that.data.listItems;
-      if(res.data.length!=0){
-        var oldData = Mythis.data.listItems;
-        var oldImg = Mythis.data.imgList;
-        var img = Mythis.int2date(res.data);
-
-        
-        Mythis.setData({
-          listItems: oldData.concat(res.data),
-          imgList: oldImg.concat(img),
-        })
-        //console.log(Mythis.data.listItems);
-        //console.log(Mythis.data.imgList);
-        this.setData({
-          refreshText2: '下拉加载更多内容',
-        })
-      }else{
-        this.setData({
-          refreshText2: '已加载全部内容',
-        })
-      }
-      wx.hideLoading();
-      temppage = 0;
-    }, err => {
-      wx.showLoading({
-        title: '请检查网络设置',
-        duration: 3000,
+    if(!this.data.issearch){
+      //console.log("scroll to bottom")
+      this.setData({
+        refreshText2:'加载中...',
       })
-      temppage = page;
-    });
-
-
+      if(temppage==0)
+        page = page + 1;
+      else
+        page = temppage;
+      var type = this.data.currentData;
+      let url = app.globalData.url + 'item/index/'+page+'/'+type; 
+      let data = {};
+      var Mythis = this;
+      app.wxRequest('GET', url, data, (res) => {
+        //console.log(res.data)
+        //var data_list = that.data.listItems;
+        if(res.data.length!=0){
+          var oldData = Mythis.data.listItems;
+          var oldImg = Mythis.data.imgList;
+          var temp = int2date(res.data);
+          var img = temp[0];
+          var count = temp[1];
+          
+          Mythis.setData({
+            listItems: oldData.concat(res.data),
+            imgList: oldImg.concat(img),
+          })
+          //console.log(Mythis.data.listItems);
+          //console.log(Mythis.data.imgList);
+          this.setData({
+            refreshText2: '下拉加载更多内容',
+          })
+        }else{
+          this.setData({
+            refreshText2: '---我是有底线的---',
+          })
+        }
+        wx.hideLoading();
+        temppage = 0;
+      }, err => {
+        wx.showLoading({
+          title: '请检查网络设置',
+          duration: 3000,
+        })
+        temppage = page;
+      });
+    }else{
+      console.log('scrolltobot in search')
+    }
   },
 
   /**
@@ -272,14 +262,51 @@ Page({
 
   bindchange: function (e) {
     const that = this;
+    const res = wx.getSystemInfoSync();
     that.setData({
-      currentData: e.detail.current
+      currentData: e.detail.current,
+      //scroll_index:e.detail.current/11*res.windowWidth
+      scroll_index:'tab'+e.detail.current
     })
+    try {
+      var value = wx.getStorageSync('listitems'+that.data.currentData)
+      if (value!='') {
+        if(value.length<10){
+          this.setData({
+            refreshText2: '---我是有底线的---',
+          })
+        }else{
+          this.setData({
+            refreshText2: '下拉加载更多内容',
+          })
+        }
+        that.setData({
+          listItems: value
+        })
+      }else{
+        that.onRefresh();
+        wx.setStorageSync('listitems'+that.data.currentData, that.data.listItems);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    // var listitem = wx.getStorageSync('listitems'+that.data.currentData);
+    // if(empty(listitem)){
+    //   console.log(listitem);
+    //   that.onRefresh();
+    //   wx.setStorageSync('listitems'+that.data.currentData, that.data.listItems);
+    // }else{
+    //   that.setData({
+    //     listItems: listitem
+    //   })
+    // }
   },
   //点击切换，滑块index赋值
   checkCurrent: function (e) {
+    this.setData({
+      issearch:false,
+    })
     const that = this;
-
     if (that.data.currentData === e.target.dataset.current) {
       return false;
     } else {
@@ -287,6 +314,20 @@ Page({
       that.setData({
         currentData: e.target.dataset.current
       })
+      //该动作会触发swiper切换事件，防止重复存取缓存
+      // try {
+      //   var value = wx.getStorageSync('listitems'+that.data.currentData)
+      //   if (value!='') {
+      //     that.setData({
+      //       listItems: value
+      //     })
+      //   }else{
+      //     that.onRefresh();
+      //     wx.setStorageSync('listitems'+that.data.currentData, that.data.listItems);
+      //   }
+      // } catch (e) {
+      //   console.log(e);
+      // }
     }
   },
 //图片预览
@@ -311,18 +352,21 @@ Page({
   },
  //长按举报或查看详情
   longpress : function(event){   
-    var id = event.currentTarget.id.substr(5)
-    //console.log(id)
+    var id = event.currentTarget.id.substr(5);
+    var content = event.currentTarget.dataset.content;
     
     wx.showActionSheet({
-      itemList: ['举报TA','联系TA'], 
+      itemList: ['复制','举报','留言'], 
       success: function(res) {
         //console.log(res.tapIndex);
         if(res.tapIndex==0){
+          wx.setClipboardData({
+            data: content,
+          })
+        }else if(res.tapIndex==1){
           //举报处理，数据库标志位+1，超过一定值标记该信息无效
           let url = app.globalData.url + 'item/tipoff/' + id;
           let data = {};
-          var Mythis = this;
           wx.showLoading({
             title: '举报中',
           })
@@ -366,6 +410,32 @@ Page({
       }  
     })
   },
+//监听滑动
+  scrollscroll:function(e) {
+    var oldpos = this.data.pos
+    var newpos = e.detail.scrollTop
+    this.setData({
+      pos:newpos
+    })
+    if(newpos > oldpos){
+      if (typeof this.getTabBar === 'function' &&
+        this.getTabBar()) {
+        this.getTabBar().setData({
+          selected: 0,
+          dis:'none'
+        })
+      }
+    }else{
+      if (typeof this.getTabBar === 'function' &&
+        this.getTabBar()) {
+        this.getTabBar().setData({
+          selected: 0,
+          dis:'flex',
+        })
+      }
+    }
+  },
+
 //回到顶部
   goTop:function(e){
     this.setData({
@@ -378,27 +448,22 @@ Page({
   },
 
   search:function(e){
-    //console.log("search");
-    var mythis = this;
-    if (mythis.data.currentData==1){
-      mythis.setData({
-        "items[0].checked":false,
-        "items[1].checked":true,
-        "form.flagValue":'Found'
-      })
-    }else{
-      mythis.setData({
-        "items[0].checked": true,
-        "items[1].checked": false,
-        "form.flagValue":'Lost'
-      })
-    }
+    var d = new Date()
+    var year = d.getFullYear()
+    var month = d.getMonth() + 1
+    var day = d.getDate()
     //用户发起搜索，根据不同页面，设置默认选项，并确定时间选择器的截止时间
-    mythis.setData({
+    this.setData({
       search_hidden:false,
-      end:util.formatTime2(new Date())
+      end:[year, month, day].map(this.formatNumber).join('-')
     })
   },
+
+  formatNumber:function(a) {
+    var t = a > 9 ? a : '0' + a;
+    return t;
+  },
+
 //用户点击搜索框的取消
   search_cancel:function(){
     var mythis = this;
@@ -430,29 +495,15 @@ Page({
       "form.typeValue":e.detail.value
     })
   },
-  inputSite: function (e) {
-    this.setData({
-      "form.siteValue": e.detail.value
-    })
-  },
   inputContent: function (e) {
     this.setData({
       "form.contentValue": e.detail.value
     })
   },
-  radioChange : function(e){
-    this.setData({
-      "form.flagValue": e.detail.value
-    })
-  },
 
-
-//------------------------------------------------
+//搜索请求------------------------------------------------
   search_confirm:function(e){
     var Mythis = this;
-    //console.log(e);
-    //console.log(Mythis.data.form.sdateValue)
-    //console.log( Mythis.data.form.edateValue)
     //console.log(Mythis.data.form.flagValue)
     wx.showLoading({
       title: '查询中',
@@ -466,7 +517,6 @@ Page({
         typeValue: Mythis.data.form.typeValue,
         siteValue: Mythis.data.form.siteValue,
         contentValue: Mythis.data.form.contentValue,
-        flagValue: Mythis.data.form.flagValue,
       },
       header: {
         "Content-Type": "application/x-www-form-urlencoded"
@@ -483,19 +533,23 @@ Page({
           })
         }else{
           //格式化信息日期，并返回图片列表，提供预览
-          var img = Mythis.int2date(res.data)
+          var temp = int2date(res.data)
+          var img = temp[0];
+          var count = temp[1];
           //console.log(img);
           Mythis.setData({
-            hofSwiper: res.data.length * 390 + 70,
+            hofSwiper: count * 390 + 70,
             listItems: res.data,
             imgList: img,
+            issearch: true,
           })
-          
-          if(Mythis.data.form.flagValue=='Lost'){
-            Mythis.setData({currentData:0})
-          }else{
-            Mythis.setData({currentData:1})
-          }
+          wx.setStorageSync('listitems0', Mythis.data.listItems)
+          Mythis.setData({currentData:0})
+          wx.showToast({
+            title: '查询到'+ count +'条结果',
+            icon:'none',
+            duration:2000
+          })
         }
       },
       fail: function (res) {

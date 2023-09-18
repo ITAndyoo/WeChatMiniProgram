@@ -20,7 +20,11 @@ Page({
   },
    
   onLoad: function (options) {
-
+    if(wx.getSystemInfoSync().theme=='dark'){
+      this.setData({
+        theme:'dark',
+      })
+    }
   },
 
   /**

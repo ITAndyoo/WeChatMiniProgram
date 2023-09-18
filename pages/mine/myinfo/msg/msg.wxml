@@ -1,34 +1,24 @@
 <!--pages/mine/myinfo/msg/msg.wxml-->
-<view class="list-item" wx:for="{{listItems}}" wx:key="id" id="item_{{item.msgid}}" data-msgid="{{item.id}}" wx:if="{{item.msgtype==1}}" bindtap="tap" bindlongpress="longpress">
-  <view class='list-item-userinfo'>
-    <view class="avatar" style="background:linear-gradient(to top, #f77062 0%, #fe5196 100%);">寻物</view>
-    <view class="list-item-username">
-      <text>有人好像捡到了你丢的东西</text>
-    </view>
-    <view class="list-item-time">
-      <text>{{item.time}}</text>
-    </view>
-  </view>
-  <view class='list-item-usertext'>
-    <view class="list-item-text-content">
-      <text>TA留言说：{{item.msg}}</text>
-    </view>
-  </view>
-</view>
-<view class="list-item" wx:for="{{listItems}}" wx:key="id" id="item_{{item.msgid}}" data-msgid="{{item.id}}" wx:if="{{item.msgtype==2}}" bindtap="tap" bindlongpress="longpress">
-  <view class='list-item-userinfo'>
-    <view class="avatar" style="background: linear-gradient(to top, #9be15d 0%, #00e3ae 100%);">招领</view>
-    <view class="list-item-username">
-      <text>感谢你捡到了TA的东西</text>
-    </view>
-    <view class="list-item-time">
-      <text>{{item.time}}</text>
-    </view>
-  </view>
-  <view class='list-item-usertext'>
-    <view class="list-item-text-content">
-      <text>你可以联系TA：{{item.msg}}</text>
+<view class="page" data-weui-theme="{{theme}}">
+  <view class="page__bd">
+    <view class="weui-panel weui-panel_access" wx:for="{{listItems}}" wx:key="id" id="item_{{item.msgid}}" data-msgid="{{item.id}}" bindtap="tap" bindlongpress="longpress">
+      <!-- <view class="weui-panel__hd">文字列表附来源</view> -->
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+          <!-- <h4 class="weui-media-box__title">{{item.thing}}</h4> -->
+          <view class="weui-media-box__desc">有人留言说：{{item.msg}}</view>
+          <view class="weui-media-box__info">
+            <view class="weui-media-box__info__meta">{{item.time}}</view>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 </view>
-<view class="tips">{{tips}}</view>
+<view class="tips" wx:if="{{hasmsg}}">{{tips}}</view>
+<view class="nomsg" wx:if="{{!hasmsg}}">
+  <view class="imgarea">
+    <image src="/images/nomsg.png" style="width:100px;" mode="widthFix"></image>
+    <view class="tips">{{tips}}</view>
+  </view>
+</view>

@@ -42,3 +42,14 @@
 .login-item{
   margin-bottom: 30px;
 }
+
+@media (prefers-color-scheme: dark) {
+  page{
+    background-color: var(--themeDarkBgColor);
+  }
+  .login-btn{
+    background-color: var(--themeDarkBgColor);
+    color: var(--themeDarkTxtColor);
+    border: solid 1px var(--themeDarkTxtColor);
+  }
+}

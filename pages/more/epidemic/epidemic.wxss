@@ -3,7 +3,7 @@
 }
 
 .section{
-  background-color: rgb(221, 221, 221);
+  background-color: rgb(233, 233, 233);
   margin: 10px;
   padding: 2px;
   border-radius: 5px;
@@ -13,6 +13,24 @@
   font-weight: bold;
 }
 
+.itemlist{
+  font-size: 15px;
+}
+
 .declare{
   font-size: 12px;
 }
+
+.weui-cell{
+  padding:0px;
+}
+
+@media (prefers-color-scheme:dark){
+  .section{
+    background-color: var(--themeDarkBgColor);
+  }
+  .weui-cell{
+    background-color: var(--themeDarkBgColor);
+    padding:0px;
+  }
+} 

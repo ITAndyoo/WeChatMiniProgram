@@ -1,6 +1,6 @@
 // pages/mine/myinfo/record/record.js
 var app = getApp();
-import decode from '../../../../utils/emoji';
+import {int2date4} from '../../../../utils/format'
 Page({
 
   /**
@@ -9,6 +9,7 @@ Page({
   data: {
     userid:'',
     mlurl:app.globalData.static_url,
+    hasrelease: false,
   },
 
   /**
@@ -17,6 +18,11 @@ Page({
   onLoad: function (options) {
     var that = this;
     //接收userid
+    if(wx.getSystemInfoSync().theme=='dark'){
+      this.setData({
+        theme:'dark',
+      })
+    }
     if(options.userid==undefined||options.userid==null||options.userid==''){
       wx.showToast({
         title: '信息失效，请重新登录',
@@ -50,14 +56,27 @@ Page({
       //console.log(res);
       if(app.checkRes(res.data)=='1000'){
         if(res.data!='fail'){
-          var img = that.int2date(res.data);
-          that.setData({
-            listItems : res.data,
-            imgList: img,
-            tips:'已加载全部内容(已不存在的消息不会再展示)'
-          })
+          var temp = int2date4(res.data);
+          var img = temp[0];
+          var count = temp[1];
+          if (count > 0){
+            that.setData({
+              listItems : res.data,
+              imgList: img,
+              hasrelease: true,
+              tips:'已加载全部内容(已不存在的消息不会再展示)'
+            })
+          }else{
+            that.setData({
+              listItems:[],
+              hasrelease: false,
+              tips:'你还没有发布过信息哦~',
+            })   
+          }
         }else{
           that.setData({
+            listItems:[],
+            hasrelease: false,
             tips:'你还没有发布过信息哦~',
           })
         }
@@ -90,28 +109,7 @@ Page({
       urls: this.data.imgList // 需要预览的图片http链接列表
     })
   },
-
-  int2date : function(a){
-    var img = new Array();
-    for(var i =0;i<a.length;i++){
-      var year = a[i].time.substr(0,2);
-      var month = a[i].time.substr(2,2);
-      var day = a[i].time.substr(4,2);
-      var hour = a[i].time.substr(6,2);
-      var min = a[i].time.substr(8,2); 
-      var date = new Date();
-      a[i].time = (date.getYear() != year) ? '20' + year + '年' + month + '月' + day + '日 ' + hour + ':' + min : month + '月' + day + '日 ' + hour + ':' + min;
-      if(a[i].url!='false')
-        img[i] = app.globalData.static_url + 'static/upload/' + a[i].url;
-      a[i].username = a[i].username.substr(-2);
-      a[i].disc=decode(a[i].disc);
-    }
-    return img;
-  },
-
-
-
-  tap:function(event){//回退怎么办？？已自动解决
+  tap:function(event){
     var id = event.currentTarget.id.substr(5)
       wx.navigateTo({
         url: '../../../index/detail/detail?id=' + id,
@@ -136,13 +134,19 @@ Page({
             //console.log(res)
             if(app.checkRes(res.data)=='1000'){
                 if(res.data=='success'){
-                wx.showToast({
-                  title: '已删除',
-                  icon:'success',
-                  duration:2000,
-                })
-                that.look(that.data.userid);
-              }
+                  wx.showToast({
+                    title: '已删除',
+                    icon:'success',
+                    duration:2000,
+                  })
+                  that.look(that.data.userid);
+                }else{
+                  wx.showToast({
+                    title: '删除失败，请稍后重试',
+                    icon:'none',
+                    duration:2000,
+                  })
+                }
             }else{
               wx.showToast({
                 title: '信息失效，请重新登录',

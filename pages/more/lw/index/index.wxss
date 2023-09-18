@@ -5,39 +5,66 @@ page{
 
 .floattip1{
   text-align: center;
-  width: 145rpx;
-  line-height: 45rpx;
-  font-size: 25rpx;
-  position: absolute;
+  width: 70px;
+  line-height: 20px;
+  font-size: 12px;
+  position: fixed;
   right: 0;
   top: 10%;
   background-color: rgba(235,235,235,0.5);
-  border-top-left-radius: 25rpx;
-  border-bottom-left-radius: 25rpx;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  z-index: 2;
 }
 
 .floattip2{
   text-align: center;
-  width: 145rpx;
-  line-height: 45rpx;
-  font-size: 25rpx;
-  position: absolute;
+  width: 70px;
+  line-height: 20px;
+  font-size: 12px;
+  position: fixed;
   right: 0;
   top: 20%;
   background-color: rgba(235,235,235,0.5);
-  border-top-left-radius: 25rpx;
-  border-bottom-left-radius: 25rpx;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  z-index: 2;
+}
+
+.floattip3{
+  text-align: center;
+  width: 70px;
+  line-height: 20px;
+  font-size: 12px;
+  position: fixed;
+  right: 0;
+  top: 80%;
+  background-color: rgba(235,235,235,0.5);
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  z-index: 2;
 }
 
 
 .section{
   width: 100%;
   text-align: center;
+  position: fixed;
+}
+
+.card{
+  position: relative;
+  background-color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  margin-bottom: 40px;
+  z-index: 1;
 }
 
 .imgview{
   width: 90%;
-  border-radius: 30rpx;
+  border-radius: 30px;
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -49,61 +76,58 @@ page{
 .img{
   width: 100%;
   margin:10px;
-  border-radius: 30rpx;
+  border-radius: 30px;
 }
 
 .item-list{
-  padding: 10px;
+  padding: 5px;
   border-bottom:1px solid;
-  border-bottom-color: rgb(235,235,235);
+  border-bottom-color: rgba(111,111,111,0.3);
   background-color: rgba(255, 255, 255,0.9);
-  font-size: 30rpx; 
-  z-index: -1;
+  font-size: 15px; 
+  z-index: 1;
 }
 
 .list-item-userinfo{
-  height: 120rpx;
+  height: 60px;
   width: 100%;
   position: relative;
 }
 
 .avatar{
-height:90rpx; 
-width:90rpx;
-border-radius: 20%;
+height:40px; 
+width:40px;
+border-radius: 50%;
 position: absolute;
-top: 10rpx;
-bottom: 10rpx;
-left: 20rpx;
+top: 5px;
+bottom: 5px;
+left: 10px;
 display: flex;
 align-items: center;
 justify-content: center;
 }
 
-.thavatar{
-height:100rpx; 
-width:100rpx;
-border-radius: 5%;
-margin-top:10rpx; 
-margin-bottom: 10rpx;
-margin-right: 20rpx;
-}
-
 .list-item-username{
   position: absolute;
-  top:10rpx;
-  left: 140rpx;
+  left: 60px;
+  font-size: 15px;
 }
 
 .list-item-time{
   position: absolute;
-  top:65rpx;
-  left: 140rpx;
-  font-size: 20rpx;
+  top:30px;
+  left: 60px;
+  font-size: 11px;
+}
+
+.list-item-like{
+  position: absolute;
+  top:5px;
+  right: 20px;
+  font-size: 11px;
 }
 
 .list-item-usertext{
-  /*height: 250rpx;*/
   width: 100%;
   position: relative;
 }
@@ -111,20 +135,20 @@ margin-right: 20rpx;
 .list-item-text-content{
   display: block;
   text-align: left;
-  padding-left: 25rpx;
-  margin-bottom: 10rpx; 
-  font-size: 25rpx;
+  padding-left: 20px;
+  margin-bottom: 10px; 
+  font-size: 15px;
   color: black;
 }
 
 
 .tip{
   width: 100%;
-  padding-bottom: 10rpx;
+  padding-bottom: 5px;
+  padding-bottom: 5px;
   border-bottom:1px solid;
   border-bottom-color: rgb(235,235,235);
-  font-size: 30rpx;
-
+  font-size: 15px;
 }
 
 .input{
@@ -138,7 +162,7 @@ margin-right: 20rpx;
 }
 
 .footer{
-  height: 40px;
+  height: 15px;
   font-size: 10px;
   color: gray;
   text-align: center;
@@ -152,5 +176,21 @@ margin-right: 20rpx;
   bottom: 0;
   height: 40px;
   display: flex;
-  z-index: 2;
+  z-index: 999;
+}
+
+@media (prefers-color-scheme: dark){
+  .card{
+    background-color: var(--themeDarkBgColor);
+  }
+  .item-list{
+    background-color: var(--themeDarkBgColor);
+  }
+
+  .list-item-text-content{
+    color: var(--themeDarkTxtColor);
+  }
+  .footer_bar{
+    background-color: var(--themeDarkBgColor);
+  }
 }
